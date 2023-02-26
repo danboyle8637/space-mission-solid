@@ -51,7 +51,7 @@ export const LoginForm: Component = () => {
     }
 
     console.log("ENV 1: ", import.meta.env.DAN_EMAIL);
-    console.log("ENV 2: ", import.meta.env.VITE_LOGIN_EMAIL);
+    console.log("ENV 2: ", import.meta.env.VITE_DAN_EMAIL);
 
     if (email === import.meta.env.VITE_LOGIN_EMAIL) {
       return navigate("/dashboard");
