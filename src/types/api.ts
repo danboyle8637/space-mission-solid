@@ -12,3 +12,7 @@ export interface ActivateMissionStatsDocBody {
     isGoal3Complete: boolean;
   };
 }
+
+export interface Env {
+  DAN_EMAIL: string;
+}

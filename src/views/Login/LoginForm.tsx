@@ -11,6 +11,7 @@ import {
   updateEmailAddressOptions,
   resetLoginForm,
 } from "../../../lib/loginStore";
+import type { Env } from "../../types/api";
 
 // TODO - DELETE THIS IN PRODUCTION
 import { updateUser } from "../../../lib/userStore";
@@ -48,6 +49,9 @@ export const LoginForm: Component = () => {
 
       updateUser(user);
     }
+
+    console.log("ENV 1: ", import.meta.env.DAN_EMAIL);
+    console.log("ENV 2: ", import.meta.env.VITE_LOGIN_EMAIL);
 
     if (email === import.meta.env.VITE_LOGIN_EMAIL) {
       return navigate("/dashboard");
