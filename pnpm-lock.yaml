@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@cloudflare/workers-types': ^4.20230221.0
   '@solidjs/router': ^0.7.0
   motion: ^10.15.5
   solid-js: ^1.6.10
@@ -18,6 +19,7 @@ dependencies:
   solid-transition-group: 0.0.13_solid-js@1.6.10
 
 devDependencies:
+  '@cloudflare/workers-types': 4.20230221.0
   typescript: 4.9.5
   vite: 4.1.1
   vite-plugin-solid: 2.5.0_solid-js@1.6.10+vite@4.1.1
@@ -337,6 +339,10 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
+    dev: true
+
+  /@cloudflare/workers-types/4.20230221.0:
+    resolution: {integrity: sha512-Ge8csuFQMNv3hd8r85PFWv4KV6bHAtKoBaanTkjbbeJS+mizoiBn4OBva0CFQiGfRJklFSGd4OxuCuiK05kogg==}
     dev: true
 
   /@esbuild/android-arm/0.16.17:
