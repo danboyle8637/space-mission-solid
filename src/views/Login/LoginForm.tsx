@@ -50,6 +50,8 @@ export const LoginForm: Component = () => {
       updateUser(user);
     }
 
+    // const appEmail = import.meta.env.MODE === "development" ?
+
     if (email === import.meta.env.VITE_DAN_EMAIL) {
       return navigate("/dashboard");
     } else {

@@ -1,8 +1,16 @@
 import { PagesFunction } from "@cloudflare/workers-types";
+import type { Env } from "../../src/types/api";
 
-export const onRequest = async (context) => {
-  console.log(context);
-  return new Response(
-    "Auth route maybe with middleware and then send request to correct worker."
-  );
+export const onRequest: PagesFunction<Env> = async (context) => {
+  const clonedReq = context.request.clone();
+  const headers = context.request.headers;
+
+  const routerHeader = headers.get("api-service");
+
+  if (routerHeader) {
+    console.log(routerHeader);
+    return context.env.USER_WORKER.fetch(clonedReq);
+  } else {
+    return new Response("No router header", { status: 400 });
+  }
 };
