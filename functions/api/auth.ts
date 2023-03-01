@@ -7,18 +7,22 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   const routerHeader = headers.get("api-service");
 
-  await context.env.SPACE_MISSION_SESSIONS.put(
-    "123456",
-    JSON.stringify({
-      userId: "654321",
-      call_sign: "Maverick",
-    })
-  );
+  // await context.env.SPACE_MISSION_SESSIONS.put(
+  //   "123456",
+  //   JSON.stringify({
+  //     userId: "12121212",
+  //     call_sign: "Ricky Backer",
+  //   })
+  // );
 
   if (routerHeader) {
-    console.log(routerHeader);
-    // return context.env.USER_WORKER.fetch(clonedReq);
-    return new Response("KV Should be filled", { status: 200 });
+    try {
+      return context.env.USER_WORKER.fetch(clonedReq);
+    } catch {
+      return new Response("Failed to route request to User Worker", {
+        status: 500,
+      });
+    }
   } else {
     return new Response("No router header", { status: 400 });
   }
