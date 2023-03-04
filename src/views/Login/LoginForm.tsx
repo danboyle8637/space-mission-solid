@@ -11,7 +11,7 @@ import {
   updateEmailAddressOptions,
   resetLoginForm,
 } from "../../../lib/loginStore";
-import type { Env } from "../../types/api";
+import type { LoginReqBody } from "../../types/api";
 
 // TODO - DELETE THIS IN PRODUCTION
 import { updateUser } from "../../../lib/userStore";
@@ -33,7 +33,7 @@ const ButtonContainer = styled("div")`
 export const LoginForm: Component = () => {
   const navigate = useNavigate();
 
-  const handleLoginForm = (e: SubmitEvent) => {
+  const handleLoginForm = async (e: SubmitEvent) => {
     e.preventDefault();
     const email = emailAddress().value;
 
@@ -50,7 +50,24 @@ export const LoginForm: Component = () => {
       updateUser(user);
     }
 
-    // const appEmail = import.meta.env.MODE === "development" ?
+    const body: LoginReqBody = {
+      emailAddress: email,
+    };
+
+    const loginRes = await fetch("/auth/login", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    if (loginRes.status !== 200) {
+      // Show error overlay...
+      console.log("Getting an error from login endpoint");
+      resetLoginForm();
+    }
+
+    const loginData = await loginRes.text();
+
+    console.log(loginData);
 
     if (email === import.meta.env.VITE_DAN_EMAIL) {
       return navigate("/dashboard");

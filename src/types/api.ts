@@ -17,7 +17,14 @@ export interface ActivateMissionStatsDocBody {
 export interface Env {
   DAN_EMAIL: string;
   SPACE_MISSION_SESSIONS: KVNamespace;
+  SPACE_MISSIONS: KVNamespace;
   MISSION_STATS_WORKER: Fetcher;
   MISSION_WORKER: Fetcher;
   USER_WORKER: Fetcher;
+}
+
+// ********** API ********** //
+
+export interface LoginReqBody {
+  emailAddress: string;
 }
