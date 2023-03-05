@@ -25,6 +25,10 @@ export interface Env {
 
 // ********** API ********** //
 
-export interface LoginReqBody {
+export interface LoginEmailReqBody {
   emailAddress: string;
+}
+
+export interface LoginPhoneReqBody {
+  phoneNumber: string;
 }

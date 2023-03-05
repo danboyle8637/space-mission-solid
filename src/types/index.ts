@@ -3,10 +3,15 @@ export interface InputValue {
   valid: boolean;
 }
 
-export type InputOptions = {
+export interface InputOptions {
   initial: boolean;
   touched: boolean;
-};
+}
+
+export interface PhoneInputValue {
+  value: string;
+  valid: boolean;
+}
 
 export type UpdateValueFunction = (event: InputEvent) => void;
 

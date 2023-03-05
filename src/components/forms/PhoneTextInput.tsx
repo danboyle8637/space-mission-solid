@@ -3,6 +3,7 @@ import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
 import { textInputActive } from "../../animations";
+import { formatPhoneInput } from "../../utils/helpers";
 import type { UpdateValueFunction, UpdateOptionsFunction } from "../../types";
 
 interface InputProps {
@@ -80,7 +81,8 @@ const Underline = styled("div")`
 `;
 
 // TODO - Build out this input for component library
-export const TextInput: Component<InputProps> = (props) => {
+export const PhoneTextInput: Component<InputProps> = (props) => {
+  let inputRef: HTMLInputElement;
   let underlineRef: HTMLDivElement;
 
   createEffect(() => {
@@ -105,6 +107,7 @@ export const TextInput: Component<InputProps> = (props) => {
   return (
     <InputContainer style={styles()}>
       <InputField
+        ref={inputRef!}
         type={props.inputType}
         id={props.inputName}
         auto-complete="off"
@@ -114,6 +117,7 @@ export const TextInput: Component<InputProps> = (props) => {
         onInput={props.updateInputValue}
         onFocus={props.updateInputOptions}
         onBlur={props.updateInputOptions}
+        maxLength={14}
       />
       <UnderlineContainer>
         <BaseUnderline />

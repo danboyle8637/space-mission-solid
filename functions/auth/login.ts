@@ -1,7 +1,7 @@
 import { PagesFunction } from "@cloudflare/workers-types";
 
 import { getErrorMessage } from "../../src/utils/helpers";
-import type { Env, LoginReqBody } from "../../src/types/api";
+import type { Env, LoginEmailReqBody } from "../../src/types/api";
 
 export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
@@ -15,8 +15,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   // 6. Add in social logins so you can get that data as well.
   const formattedReq = new Response(request.body);
-  const body: LoginReqBody = await formattedReq.json();
-  const emailAddress = body.emailAddress;
+  const body: LoginEmailReqBody = await formattedReq.json();
+  const { emailAddress } = body;
 
   if (!emailAddress) {
     const response = new Response("Bad Request", { status: 400 });
@@ -25,19 +25,17 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   try {
     if (emailAddress === "dan@dan.com") {
-      const token = "123456";
-      // TODO - Update your cookie to be secure
-      const cookieHeader = `session-token=${token}; SameSite=Lax; Path=/api; HttpOnly`;
+      const stytchUrl =
+        "https://test.stytch.com/v1/magic_links/email/login_or_create";
 
-      const response = new Response("Cookie set for future auth.", {
-        status: 200,
-      });
-      response.headers.set("Set-Cookie", cookieHeader);
+      const token = "123456";
+      const cookieHeader = `session-token=${token}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
       // await context.env.SPACE_MISSION_SESSIONS.put(token, JSON.stringify({
       //   user: 123456
       // }))
       const userResponse = await context.env.USER_WORKER.fetch(userRequest);
+      userResponse.headers.set("Set-Cookie", cookieHeader);
       return userResponse;
     }
 
