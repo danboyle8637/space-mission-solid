@@ -4,6 +4,7 @@ import type { Component } from "solid-js";
 
 import { TextInput } from "../../components/forms/TextInput";
 import { PhoneTextInput } from "../../components/forms/PhoneTextInput";
+import { PhonePasscodeInput } from "../../components/forms/PhonePasscodeInput";
 import { FormButton } from "../../components/buttons/FormButton";
 import {
   emailAddress,
