@@ -2,6 +2,10 @@ import { createEffect, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
+import {
+  phonePasscodeValue6,
+  updateFirstNameOptions,
+} from "../../../lib/loginStore";
 import { textInputActive } from "../../animations";
 import type { UpdateValueFunction, UpdateOptionsFunction } from "../../types";
 
@@ -81,9 +85,14 @@ const Underline = styled("div")`
 
 // TODO - Build out this input for component library
 export const TextInput: Component<InputProps> = (props) => {
+  let inputRef: HTMLInputElement;
   let underlineRef: HTMLDivElement;
 
   createEffect(() => {
+    if (phonePasscodeValue6().valid && props.inputName === "firstName") {
+      inputRef.focus();
+    }
+
     if (props.touched) {
       textInputActive(underlineRef);
     }
@@ -105,6 +114,7 @@ export const TextInput: Component<InputProps> = (props) => {
   return (
     <InputContainer style={styles()}>
       <InputField
+        ref={inputRef!}
         type={props.inputType}
         id={props.inputName}
         auto-complete="off"

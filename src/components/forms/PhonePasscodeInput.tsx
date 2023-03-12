@@ -18,6 +18,7 @@ import {
   phonePasscodeOptions6,
   updatePhonePasscodeValue,
   updatePhonePasscodeOptions,
+  setPhonePasscode,
 } from "../../../lib/loginStore";
 
 const Contianer = styled("form")`
@@ -66,6 +67,10 @@ export const PhonePasscodeInput: Component = () => {
     if (valid5) {
       inputRef6.focus();
     }
+
+    if (valid6) {
+      inputRef6.blur();
+    }
   });
 
   createMemo(() => {
@@ -76,10 +81,7 @@ export const PhonePasscodeInput: Component = () => {
         phonePasscodeValue5().value
       }${phonePasscodeValue6().value}`;
 
-      console.log(
-        "Send and verify the code and log the user is if valid: ",
-        passcode
-      );
+      setPhonePasscode(passcode);
     }
   });
 

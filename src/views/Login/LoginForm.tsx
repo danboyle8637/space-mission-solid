@@ -9,8 +9,8 @@ import { FormButton } from "../../components/buttons/FormButton";
 import {
   emailAddress,
   emailAddressOptions,
-  updateEmailAddressValue,
-  updateEmailAddressOptions,
+  updateInputValue,
+  updateInputOptions,
   phoneNumberValue,
   phoneNumberOptions,
   updatePhoneNumberValue,
@@ -52,8 +52,6 @@ export const LoginForm: Component = () => {
       phoneNumber: phoneNumber,
     };
 
-    console.log(phoneBody);
-
     // const loginRes = await fetch("/auth/login", {
     //   method: "POST",
     //   body: JSON.stringify(body),
@@ -90,8 +88,8 @@ export const LoginForm: Component = () => {
         valid={emailAddress().valid}
         initial={emailAddressOptions().initial}
         touched={emailAddressOptions().touched}
-        updateInputValue={updateEmailAddressValue}
-        updateInputOptions={updateEmailAddressOptions}
+        updateInputValue={updateInputValue}
+        updateInputOptions={updateInputOptions}
       /> */}
       <PhoneTextInput
         inputType="tel"

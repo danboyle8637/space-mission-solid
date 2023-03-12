@@ -52,3 +52,9 @@ export const formatPhoneInput = (input: string) => {
 
   return "";
 };
+
+export const getExpiresAtTimestamp = (expiresAt: string) => {
+  const date = new Date(expiresAt);
+  const timestamp = date.getTime();
+  return timestamp;
+};

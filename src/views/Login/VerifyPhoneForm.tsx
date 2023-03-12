@@ -1,8 +1,24 @@
+import { createEffect } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
 import { SpaceMissionLogo } from "../../components/images/SpaceMissionLogo";
+import { CountdownTimer } from "../../components/timers/CountdownTimer";
 import { PhonePasscodeInput } from "../../components/forms/PhonePasscodeInput";
+import { TextInput } from "../../components/forms/TextInput";
+import { FormButton } from "../../components/buttons/FormButton";
+import {
+  phonePasscode,
+  phonePasscodeValue6,
+  firstNameValue,
+  firstNameOptions,
+  emailAddress,
+  emailAddressOptions,
+  callSignValue,
+  callSignOptions,
+  updateInputValue,
+  updateInputOptions,
+} from "../../../lib/loginStore";
 
 const Container = styled("div")`
   padding: 20px 20px 40px 20px;
@@ -24,6 +40,51 @@ export const VerifyPhoneForm: Component = () => {
     <Container>
       <SpaceMissionLogo />
       <PhonePasscodeInput />
+      <TextInput
+        inputType="text"
+        inputName="firstName"
+        labelFor="firstName"
+        labelName="First Name"
+        labelInstructions=""
+        labelError=""
+        placeholder="Enter your first name..."
+        value={firstNameValue().value}
+        valid={firstNameValue().valid}
+        initial={firstNameOptions().initial}
+        touched={firstNameOptions().touched}
+        updateInputValue={updateInputValue}
+        updateInputOptions={updateInputOptions}
+      />
+      <TextInput
+        inputType="email"
+        inputName="emailAddress"
+        labelFor="emailAddress"
+        labelName="Email Address"
+        labelInstructions=""
+        labelError=""
+        placeholder="Enter your email address..."
+        value={emailAddress().value}
+        valid={emailAddress().valid}
+        initial={emailAddressOptions().initial}
+        touched={emailAddressOptions().touched}
+        updateInputValue={updateInputValue}
+        updateInputOptions={updateInputOptions}
+      />
+      <TextInput
+        inputType="text"
+        inputName="callSign"
+        labelFor="callSign"
+        labelName="Call Sign"
+        labelInstructions=""
+        labelError=""
+        placeholder="Enter your call sign..."
+        value={callSignValue().value}
+        valid={callSignValue().valid}
+        initial={callSignOptions().initial}
+        touched={callSignOptions().touched}
+        updateInputValue={updateInputValue}
+        updateInputOptions={updateInputOptions}
+      />
     </Container>
   );
 };

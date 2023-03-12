@@ -2,8 +2,41 @@ import { createSignal } from "solid-js";
 
 import { formatPhoneInput } from "../src/utils/helpers";
 import { formValidator } from "../src/utils/validators";
-import { emailValidationRules } from "../src/utils/validators/rules";
+import {
+  emailValidationRules,
+  firstNameValidationRules,
+} from "../src/utils/validators/rules";
 import type { InputValue, InputOptions } from "../src/types";
+
+export const [firstNameValue, setFirstNameValue] = createSignal<InputValue>({
+  value: "",
+  valid: false,
+});
+
+export const [firstNameOptions, setFirstNameOptions] =
+  createSignal<InputOptions>({
+    initial: true,
+    touched: false,
+  });
+
+export const updateFirstNameOptions = () => {
+  setFirstNameOptions(() => ({
+    initial: false,
+    touched: true,
+  }));
+};
+
+export const [callSignValue, setCallSignValue] = createSignal<InputValue>({
+  value: "",
+  valid: false,
+});
+
+export const [callSignOptions, setCallSignOptions] = createSignal<InputOptions>(
+  {
+    initial: true,
+    touched: false,
+  }
+);
 
 export const [emailAddress, setEmailAddress] = createSignal<InputValue>({
   value: "",
@@ -16,22 +49,75 @@ export const [emailAddressOptions, setEmailAddressOptions] =
     touched: false,
   });
 
-export const updateEmailAddressValue = (event: InputEvent) => {
-  const inputElement = event.currentTarget as HTMLInputElement;
-  const value = inputElement.value;
-  const valid = formValidator(value, emailValidationRules);
+export const updateInputValue = (e: InputEvent) => {
+  const currentTarget = e.currentTarget as HTMLInputElement;
+  const name = currentTarget.name;
+  const value = currentTarget.value;
 
-  setEmailAddress(() => ({
-    value: value,
-    valid: valid,
-  }));
+  switch (name) {
+    case "firstName": {
+      const valid = formValidator(value, firstNameValidationRules);
+
+      setFirstNameValue(() => ({
+        value: value,
+        valid: valid,
+      }));
+      break;
+    }
+    case "emailAddress": {
+      const valid = formValidator(value, emailValidationRules);
+
+      setEmailAddress(() => ({
+        value: value,
+        valid: valid,
+      }));
+      break;
+    }
+    case "callSign": {
+      const valid = value.length > 0 && value.length < 20;
+
+      setCallSignValue(() => ({
+        value: value,
+        valid: valid,
+      }));
+      break;
+    }
+    default: {
+      return;
+    }
+  }
 };
 
-export const updateEmailAddressOptions = () => {
-  setEmailAddressOptions((prevState) => ({
-    initial: false,
-    touched: !prevState.touched,
-  }));
+export const updateInputOptions = (e: FocusEvent) => {
+  const currentTarget = e.currentTarget as HTMLInputElement;
+  const name = currentTarget.name;
+
+  switch (name) {
+    case "firstName": {
+      setFirstNameOptions((prevValue) => ({
+        initial: false,
+        touched: !prevValue.touched,
+      }));
+      break;
+    }
+    case "emailAddress": {
+      setEmailAddressOptions((prevState) => ({
+        initial: false,
+        touched: !prevState.touched,
+      }));
+      break;
+    }
+    case "callSign": {
+      setCallSignOptions((prevValue) => ({
+        initial: false,
+        touched: !prevValue.touched,
+      }));
+      break;
+    }
+    default: {
+      return;
+    }
+  }
 };
 
 export const [phoneNumberValue, setPhoneNumberValue] = createSignal<InputValue>(
@@ -76,6 +162,8 @@ export const resetLoginForm = () => {
 };
 
 // *************** Phone Validation *************** //
+
+export const [phonePasscode, setPhonePasscode] = createSignal<string>("");
 
 export const [phonePasscodeValue1, setPhonePasscodeValue1] =
   createSignal<InputValue>({
@@ -248,4 +336,8 @@ export const updatePhonePasscodeOptions = (e: FocusEvent) => {
       break;
     }
   }
+};
+
+export const updatePhonePasscode = (passcode: string) => {
+  setPhonePasscode(passcode);
 };

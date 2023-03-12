@@ -1,9 +1,6 @@
-import { PagesFunction } from "@cloudflare/workers-types";
+import type { PagesFunction } from "@cloudflare/workers-types";
+import type { Env } from "../../../src/types/api";
 
-export const onRequest: PagesFunction = (context) => {
-  const actionParams = context.params.user;
-
-  console.log("Params: ", actionParams);
-
-  return new Response(`Response from user fuction: ${actionParams}`);
+export const onRequest: PagesFunction<Env> = async (context) => {
+  return context.env.USER_WORKER.fetch(context.request);
 };

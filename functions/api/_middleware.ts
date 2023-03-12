@@ -12,7 +12,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const cookie = headers.get("Cookie") || "";
   const cookieData = parse(cookie);
 
-  if (cookieData[COOKIE_NAME] !== null) {
+  if (cookie !== "" && cookieData[COOKIE_NAME] !== null) {
     const token = cookieData[COOKIE_NAME];
     console.log("Token: ", token);
 
