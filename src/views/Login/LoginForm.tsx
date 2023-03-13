@@ -17,6 +17,7 @@ import {
   updatePhoneNumberOptions,
   resetLoginForm,
 } from "../../../lib/loginStore";
+import type { updateUserLoginData } from "../../../lib/userStore";
 import type { LoginEmailReqBody, LoginPhoneReqBody } from "../../types/api";
 
 // TODO - DELETE THIS IN PRODUCTION
@@ -51,6 +52,10 @@ export const LoginForm: Component = () => {
     const phoneBody: LoginPhoneReqBody = {
       phoneNumber: phoneNumber,
     };
+
+    // TODO - Hit get phone code endpoint
+    // TODO - Save the data that comes back
+    // TODO - Push user to verification form
 
     // const loginRes = await fetch("/auth/login", {
     //   method: "POST",

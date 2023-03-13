@@ -23,6 +23,8 @@ export interface Env {
   USER_WORKER: Fetcher;
   STYTCH_PROJECT_ID: string;
   STYTCH_SECRET: string;
+  DAN_PHONE: string;
+  KINDAL_PHONE: string;
 }
 
 // ********** API ********** //
@@ -35,12 +37,17 @@ export interface LoginPhoneReqBody {
   phoneNumber: string;
 }
 
-export interface AuthenticatePhoneBody {
+export interface AuthenticateNewUserBody {
   phoneId: string;
   code: string;
   firstName: string;
   emailAddress: string;
   callSign: string;
+}
+
+export interface AuthenticateExistingUserBody {
+  phoneId: string;
+  code: string;
 }
 
 export interface StytchAuthenticateBody {
@@ -55,6 +62,11 @@ export interface StytchLoginCreateRes {
   user_id: string;
   phone_id: string;
   user_created: boolean;
+}
+
+export interface UserLoginData {
+  phoneId: string;
+  userCreated: boolean;
 }
 
 interface StytchPhoneNumbers {

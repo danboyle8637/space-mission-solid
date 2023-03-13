@@ -2,11 +2,11 @@ import { createEffect } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
-import { SpaceMissionLogo } from "../../components/images/SpaceMissionLogo";
-import { CountdownTimer } from "../../components/timers/CountdownTimer";
-import { PhonePasscodeInput } from "../../components/forms/PhonePasscodeInput";
-import { TextInput } from "../../components/forms/TextInput";
-import { FormButton } from "../../components/buttons/FormButton";
+import { SpaceMissionLogo } from "../../../components/images/SpaceMissionLogo";
+import { CountdownTimer } from "../../../components/timers/CountdownTimer";
+import { PhonePasscodeInput } from "../../../components/forms/PhonePasscodeInput";
+import { TextInput } from "../../../components/forms/TextInput";
+import { FormButton } from "../../../components/buttons/FormButton";
 import {
   phonePasscode,
   phonePasscodeValue6,
@@ -18,9 +18,9 @@ import {
   callSignOptions,
   updateInputValue,
   updateInputOptions,
-} from "../../../lib/loginStore";
+} from "../../../../lib/loginStore";
 
-const Container = styled("div")`
+const Container = styled("form")`
   padding: 20px 20px 40px 20px;
   display: grid;
   grid-template-columns: 1fr;
@@ -35,7 +35,13 @@ const Container = styled("div")`
   overflow: hidden;
 `;
 
-export const VerifyPhoneForm: Component = () => {
+export const NewUserForm: Component = () => {
+  const handleVerifyPhone = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    // TODO - Take data and hit authenticate endpoint
+  };
+
   return (
     <Container>
       <SpaceMissionLogo />

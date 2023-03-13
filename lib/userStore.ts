@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
-import { createStore } from "solid-js/store";
 
-import { UserDoc } from "../src/types";
+import type { UserDoc } from "../src/types";
+import type { UserLoginData } from "../src/types/api";
 
 interface UserState {
   userId: string;
@@ -33,4 +33,16 @@ export const [user, setUser] = createSignal<UserState>({
 
 export const updateUser = (user: UserDoc) => {
   setUser(user);
+};
+
+export const [userLoginData, setUserLoginData] = createSignal<UserLoginData>({
+  phoneId: "",
+  userCreated: false,
+});
+
+export const updateUserLoginData = (phoneId: string, userCreated: boolean) => {
+  setUserLoginData(() => ({
+    phoneId: phoneId,
+    userCreated: userCreated,
+  }));
 };

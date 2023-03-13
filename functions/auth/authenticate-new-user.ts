@@ -1,7 +1,7 @@
 import type { PagesFunction } from "@cloudflare/workers-types";
 import type {
   Env,
-  AuthenticatePhoneBody,
+  AuthenticateNewUserBody,
   StytchAuthenticateBody,
   StytchAuthenticateRes,
   UserKVDoc,
@@ -12,7 +12,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
 
   const formattedReq = new Response(request.body);
-  const body: AuthenticatePhoneBody = await formattedReq.json();
+  const body: AuthenticateNewUserBody = await formattedReq.json();
   const { phoneId, code, firstName, emailAddress, callSign } = body;
 
   if (!phoneId || !code) {
@@ -56,8 +56,6 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       expiresAt: expiresAt,
     };
 
-    // TODO - save the user in a KV store that tracks if they are an active member
-
     const uuid = crypto.randomUUID();
 
     await context.env.SPACE_MISSION_SESSIONS.put(
@@ -65,16 +63,31 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       JSON.stringify(userKVDoc)
     );
 
-    // const saveUser =
+    const saveUserBody = {
+      firstName: firstName,
+      emailAddress: emailAddress,
+      callSign: callSign,
+    };
+
+    const newUrl = new URL(request.url);
+
+    const saveUserReq = new Request("/create-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        user: userId,
+      },
+      body: JSON.stringify(saveUserBody),
+    });
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    const response = new Response("");
+    const userResponse = await context.env.USER_WORKER.fetch(saveUserReq);
+    userResponse.headers.set("Set-Cookie", cookieHeader);
+
+    return userResponse;
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;
   }
-
-  const userResponse = await context.env.USER_WORKER.fetch(userRequest);
-  userResponse.headers.set("Set-Cookie", cookieHeader);
 };

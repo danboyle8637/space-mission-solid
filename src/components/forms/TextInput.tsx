@@ -2,10 +2,7 @@ import { createEffect, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
-import {
-  phonePasscodeValue6,
-  updateFirstNameOptions,
-} from "../../../lib/loginStore";
+import { phonePasscodeValue6 } from "../../../lib/loginStore";
 import { textInputActive } from "../../animations";
 import type { UpdateValueFunction, UpdateOptionsFunction } from "../../types";
 

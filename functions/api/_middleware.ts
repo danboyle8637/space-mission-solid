@@ -1,41 +1,39 @@
 import { PagesFunction } from "@cloudflare/workers-types";
 import { parse } from "cookie";
 
-import { getErrorMessage } from "../../src/utils/helpers";
-import type { Env } from "../../src/types/api";
+import { getExpiresAtTimestamp } from "../../src/utils/helpers";
+import type { Env, GetUserBody, UserKVDoc } from "../../src/types/api";
 
 export const onRequest: PagesFunction<Env> = async (context) => {
-  const requestToPass = context.request.clone();
-
   const COOKIE_NAME = "session-token";
   const headers = context.request.headers;
   const cookie = headers.get("Cookie") || "";
   const cookieData = parse(cookie);
 
-  if (cookie !== "" && cookieData[COOKIE_NAME] !== null) {
-    const token = cookieData[COOKIE_NAME];
-    console.log("Token: ", token);
-
-    // const sessionsData = context.env.SPACE_MISSION_SESSIONS.get(token)
-
-    // Look up session in KV
-    // Check the expires time
-    // If good... pass request
-    // If bad... Logout user or get a refresh token for new session
-  }
-
-  // await context.env.SPACE_MISSION_SESSIONS.put(
-  //   "123456",
-  //   JSON.stringify({
-  //     userId: "12121212",
-  //     call_sign: "Ricky Backer",
-  //   })
-  // );
-
-  try {
-    return context.next();
-  } catch (error) {
-    const response = new Response(getErrorMessage(error), { status: 500 });
+  if (cookie === "" || cookieData[COOKIE_NAME] === null) {
+    const response = new Response("LOGIN", { status: 403 });
     return response;
   }
+
+  const request = context.request;
+  const formattedReq = new Response(request.body);
+  const body: GetUserBody = await formattedReq.json();
+  const { timestamp } = body;
+
+  const token = cookieData[COOKIE_NAME];
+
+  const userDoc = await context.env.SPACE_MISSION_SESSIONS.get(token);
+  const userData: UserKVDoc = JSON.parse(userDoc);
+  const { userId, expiresAt } = userData;
+
+  const expiresTimestamp = getExpiresAtTimestamp(expiresAt);
+
+  if (expiresTimestamp < timestamp) {
+    // Need to logout and sign back in
+    const response = new Response("LOGIN", { status: 403 });
+    return response;
+  }
+
+  request.headers.set("user", userId);
+  return context.next();
 };

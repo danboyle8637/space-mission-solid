@@ -19,13 +19,6 @@ export const [firstNameOptions, setFirstNameOptions] =
     touched: false,
   });
 
-export const updateFirstNameOptions = () => {
-  setFirstNameOptions(() => ({
-    initial: false,
-    touched: true,
-  }));
-};
-
 export const [callSignValue, setCallSignValue] = createSignal<InputValue>({
   value: "",
   valid: false,

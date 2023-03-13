@@ -20,7 +20,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    if (phoneNumber === "18438191412" || phoneNumber === "18434376700") {
+    if (
+      phoneNumber === context.env.DAN_PHONE ||
+      phoneNumber === context.env.KINDAL_PHONE
+    ) {
       const stytchLoginCreateUrl =
         "https://test.stytch.com/v1/magic_links/email/login_or_create";
 
@@ -45,14 +48,24 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         return response;
       }
 
-      // TODO - send back the phone_id so you can send that to authenticate
-      // TODO - Need to know if they are already a member... they need to see a different phone verification
+      const loginData: StytchLoginCreateRes = await loginRes.json();
 
-      const response = new Response("Code sent", { status: 200 });
+      const phoneId = loginData.phone_id;
+      // true if new - false if already exist
+      const userCreated = loginData.user_created;
+
+      const resBody = {
+        phoneId: phoneId,
+        userCreated: userCreated,
+      };
+
+      const response = new Response(JSON.stringify(resBody), { status: 200 });
       return response;
     }
 
-    return new Response("You're Not Allowed In Just Yet");
+    return new Response("You Haven't Attended Astronaught Training", {
+      status: 403,
+    });
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;
