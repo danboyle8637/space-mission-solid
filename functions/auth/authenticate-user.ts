@@ -8,6 +8,7 @@ import type {
 } from "../../src/types/api";
 import { getErrorMessage } from "../../src/utils/helpers";
 
+// Needs to be a post request
 export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
 
@@ -64,6 +65,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     );
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
+
+    // TODO - You still want to go get the user so they have their data when they get pushed to the dashboard.
 
     const response = new Response("Authenticated", { status: 200 });
     response.headers.set("Set-Cookie", cookieHeader);

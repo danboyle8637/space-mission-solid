@@ -2,26 +2,21 @@ import { createEffect } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
-import { SpaceMissionLogo } from "../../../components/images/SpaceMissionLogo";
-import { CountdownTimer } from "../../../components/timers/CountdownTimer";
-import { PhonePasscodeInput } from "../../../components/forms/PhonePasscodeInput";
-import { TextInput } from "../../../components/forms/TextInput";
-import { FormButton } from "../../../components/buttons/FormButton";
+import { CurrentUserForm } from "./CurrentUserForm";
+import { NewUserForm } from "./NewUserForm";
+import { userLoginData } from "../../../../lib/userStore";
 import {
-  phonePasscode,
-  phonePasscodeValue6,
-  firstNameValue,
-  firstNameOptions,
-  emailAddress,
-  emailAddressOptions,
-  callSignValue,
-  callSignOptions,
-  updateInputValue,
-  updateInputOptions,
+  showPhoneForm,
+  showNewMemberPasscodeForm,
+  showReturningMemberPasscodeForm,
+  updateShowNewMemberPasscodeForm,
+  updateShowReturningMemberPasscodeForm,
 } from "../../../../lib/loginStore";
+import { showLoginForm, hideLoginForm } from "../../../animations";
 
 const Container = styled("div")`
-  padding: 20px 20px 40px 20px;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: min-content;
@@ -36,55 +31,35 @@ const Container = styled("div")`
 `;
 
 export const VerifyPhoneForm: Component = () => {
+  let validateFormRef: HTMLDivElement;
+
+  createEffect(() => {
+    if (
+      !showPhoneForm() &&
+      (showReturningMemberPasscodeForm() || showNewMemberPasscodeForm())
+    ) {
+      showLoginForm(validateFormRef);
+    }
+  });
+
+  createEffect(() => {
+    if (userLoginData().userCreated) {
+      updateShowNewMemberPasscodeForm(true);
+    }
+
+    if (!userLoginData().userCreated) {
+      updateShowReturningMemberPasscodeForm(true);
+    }
+  });
+
   return (
-    <Container>
-      <SpaceMissionLogo />
-      <PhonePasscodeInput />
-      <TextInput
-        inputType="text"
-        inputName="firstName"
-        labelFor="firstName"
-        labelName="First Name"
-        labelInstructions=""
-        labelError=""
-        placeholder="Enter your first name..."
-        value={firstNameValue().value}
-        valid={firstNameValue().valid}
-        initial={firstNameOptions().initial}
-        touched={firstNameOptions().touched}
-        updateInputValue={updateInputValue}
-        updateInputOptions={updateInputOptions}
-      />
-      <TextInput
-        inputType="email"
-        inputName="emailAddress"
-        labelFor="emailAddress"
-        labelName="Email Address"
-        labelInstructions=""
-        labelError=""
-        placeholder="Enter your email address..."
-        value={emailAddress().value}
-        valid={emailAddress().valid}
-        initial={emailAddressOptions().initial}
-        touched={emailAddressOptions().touched}
-        updateInputValue={updateInputValue}
-        updateInputOptions={updateInputOptions}
-      />
-      <TextInput
-        inputType="text"
-        inputName="callSign"
-        labelFor="callSign"
-        labelName="Call Sign"
-        labelInstructions=""
-        labelError=""
-        placeholder="Enter your call sign..."
-        value={callSignValue().value}
-        valid={callSignValue().valid}
-        initial={callSignOptions().initial}
-        touched={callSignOptions().touched}
-        updateInputValue={updateInputValue}
-        updateInputOptions={updateInputOptions}
-      />
-    </Container>
+    <>
+      {showPhoneForm() ? null : (
+        <Container ref={validateFormRef!}>
+          {showNewMemberPasscodeForm() ? <NewUserForm /> : null}
+          {showReturningMemberPasscodeForm() ? <CurrentUserForm /> : null}
+        </Container>
+      )}
+    </>
   );
 };

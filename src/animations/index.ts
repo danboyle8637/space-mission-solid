@@ -88,14 +88,6 @@ export const missionDetailsClosed = (card: HTMLDivElement) => {
   );
 };
 
-export const loginFormOnLoad = (form: HTMLDivElement) => {
-  animate(
-    form,
-    { y: [-80, 0], scale: [0.9, 1], opacity: [0, 1] },
-    { duration: 0.8, easing: "ease-in-out" }
-  );
-};
-
 export const overlayCloseButtonAni = (
   leftCross: HTMLDivElement,
   rightCross: HTMLDivElement
@@ -139,5 +131,35 @@ export const modalExit = (modal: HTMLDialogElement) => {
       opacity: [1, 0],
     },
     { duration: 0.3 }
+  );
+};
+
+export const hideLoginForm = (form: HTMLDivElement) => {
+  animate(
+    form,
+    {
+      y: [0, -20],
+      scale: [1, 0.9],
+      opacity: [1, 0],
+    },
+    {
+      duration: 0.3,
+      easing: "ease-in-out",
+    }
+  );
+};
+
+export const showLoginForm = (form: HTMLDivElement) => {
+  animate(
+    form,
+    {
+      y: [-20, 0],
+      scale: [0.9, 1],
+      opacity: [0, 1],
+    },
+    {
+      duration: 0.8,
+      easing: "ease-in-out",
+    }
   );
 };

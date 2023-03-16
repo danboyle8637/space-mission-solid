@@ -37,7 +37,7 @@ export const updateUser = (user: UserDoc) => {
 
 export const [userLoginData, setUserLoginData] = createSignal<UserLoginData>({
   phoneId: "",
-  userCreated: false,
+  userCreated: true,
 });
 
 export const updateUserLoginData = (phoneId: string, userCreated: boolean) => {

@@ -6,6 +6,7 @@ import { TextInput } from "../../components/forms/TextInput";
 import { PhoneTextInput } from "../../components/forms/PhoneTextInput";
 import { PhonePasscodeInput } from "../../components/forms/PhonePasscodeInput";
 import { FormButton } from "../../components/buttons/FormButton";
+import { getErrorMessage } from "../../utils/helpers";
 import {
   emailAddress,
   emailAddressOptions,
@@ -17,12 +18,16 @@ import {
   updatePhoneNumberOptions,
   resetLoginForm,
 } from "../../../lib/loginStore";
-import type { updateUserLoginData } from "../../../lib/userStore";
-import type { LoginEmailReqBody, LoginPhoneReqBody } from "../../types/api";
+import { updateUserLoginData } from "../../../lib/userStore";
+import type {
+  LoginEmailReqBody,
+  LoginPhoneReqBody,
+  UserLoginData,
+} from "../../types/api";
 
-// TODO - DELETE THIS IN PRODUCTION
-import { updateUser } from "../../../lib/userStore";
-import type { UserDoc } from "../../types/index";
+interface FormProps {
+  handleFormSubmit: (e: SubmitEvent) => void;
+}
 
 const FormContainer = styled("form")`
   display: grid;
@@ -37,50 +42,9 @@ const ButtonContainer = styled("div")`
   width: 175px;
 `;
 
-export const LoginForm: Component = () => {
-  const navigate = useNavigate();
-
-  const handleLoginForm = async (e: SubmitEvent) => {
-    e.preventDefault();
-    const email = emailAddress().value;
-    const phoneNumber = phoneNumberValue().value;
-
-    const emailBody: LoginEmailReqBody = {
-      emailAddress: email,
-    };
-
-    const phoneBody: LoginPhoneReqBody = {
-      phoneNumber: phoneNumber,
-    };
-
-    // TODO - Hit get phone code endpoint
-    // TODO - Save the data that comes back
-    // TODO - Push user to verification form
-
-    // const loginRes = await fetch("/auth/login", {
-    //   method: "POST",
-    //   body: JSON.stringify(body),
-    // });
-
-    // if (loginRes.status !== 200) {
-    //   // Show error overlay...
-    //   console.log("Getting an error from login endpoint");
-    //   resetLoginForm();
-    // }
-
-    // const loginData = await loginRes.text();
-
-    // console.log(loginData);
-
-    // if (email === import.meta.env.VITE_DAN_EMAIL) {
-    //   return navigate("/dashboard");
-    // } else {
-    //   resetLoginForm();
-    // }
-  };
-
+export const LoginForm: Component<FormProps> = (props) => {
   return (
-    <FormContainer onSubmit={handleLoginForm}>
+    <FormContainer onSubmit={props.handleFormSubmit}>
       {/* <TextInput
         inputType="email"
         inputName="emailAddress"

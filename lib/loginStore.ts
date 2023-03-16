@@ -8,6 +8,50 @@ import {
 } from "../src/utils/validators/rules";
 import type { InputValue, InputOptions } from "../src/types";
 
+// *************** Login Network Requests *************** //
+
+export const [isMakingNetworkRequest, setIsMakingNetworkRequest] =
+  createSignal<boolean>(false);
+
+export const toggleIsMakingNetworkRequest = () => {
+  setIsMakingNetworkRequest((prevValue) => !prevValue);
+};
+
+export const [isTextSent, setIsTextSent] = createSignal<boolean>(false);
+
+export const toggleIsTextSent = () => {
+  setIsTextSent((prevValue) => !prevValue);
+};
+
+export const [isPhoneVerified, setIsPhoneVerified] =
+  createSignal<boolean>(false);
+
+export const toggleIsPhoneVerified = () => {
+  setIsPhoneVerified((prevValue) => !prevValue);
+};
+
+export const [showPhoneForm, setShowPhoneForm] = createSignal<boolean>(true);
+
+export const updateShowPhoneForm = (shouldShow: boolean) => {
+  setShowPhoneForm(shouldShow);
+};
+
+export const [showNewMemberPasscodeForm, setShowNewMemberPasscodeForm] =
+  createSignal<boolean>(false);
+
+export const updateShowNewMemberPasscodeForm = (shouldShow: boolean) => {
+  setShowNewMemberPasscodeForm(shouldShow);
+};
+
+export const [
+  showReturningMemberPasscodeForm,
+  setShowReturningMemberPasscodeForm,
+] = createSignal<boolean>(false);
+
+export const updateShowReturningMemberPasscodeForm = (shouldShow: boolean) => {
+  setShowReturningMemberPasscodeForm(shouldShow);
+};
+
 export const [firstNameValue, setFirstNameValue] = createSignal<InputValue>({
   value: "",
   valid: false,
@@ -129,6 +173,8 @@ export const [phoneNumberOptions, setPhoneNumberOptions] =
 export const updatePhoneNumberValue = (e: InputEvent) => {
   const inputElement = e.currentTarget as HTMLInputElement;
   const value = inputElement.value;
+  const regex = /^[0-9]+$/;
+  const valid = regex.test(value);
 
   setPhoneNumberValue(() => ({
     value: formatPhoneInput(value),
@@ -156,79 +202,189 @@ export const resetLoginForm = () => {
 
 // *************** Phone Validation *************** //
 
+interface phonePasscodeValueState {
+  one: {
+    value: string;
+    valid: boolean;
+  };
+  two: {
+    value: string;
+    valid: boolean;
+  };
+  three: {
+    value: string;
+    valid: boolean;
+  };
+  four: {
+    value: string;
+    valid: boolean;
+  };
+  five: {
+    value: string;
+    valid: boolean;
+  };
+  six: {
+    value: string;
+    valid: boolean;
+  };
+}
+
+interface phonePasscodeOptionsState {
+  one: {
+    initial: boolean;
+    touched: boolean;
+  };
+  two: {
+    initial: boolean;
+    touched: boolean;
+  };
+  three: {
+    initial: boolean;
+    touched: boolean;
+  };
+  four: {
+    initial: boolean;
+    touched: boolean;
+  };
+  five: {
+    initial: boolean;
+    touched: boolean;
+  };
+  six: {
+    initial: boolean;
+    touched: boolean;
+  };
+}
+
 export const [phonePasscode, setPhonePasscode] = createSignal<string>("");
 
-export const [phonePasscodeValue1, setPhonePasscodeValue1] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
+export const [phonePasscodeValue, setPhonePasscodeValue] =
+  createSignal<phonePasscodeValueState>({
+    one: {
+      value: "",
+      valid: false,
+    },
+    two: {
+      value: "",
+      valid: false,
+    },
+    three: {
+      value: "",
+      valid: false,
+    },
+    four: {
+      value: "",
+      valid: false,
+    },
+    five: {
+      value: "",
+      valid: false,
+    },
+    six: {
+      value: "",
+      valid: false,
+    },
   });
 
-export const [phonePasscodeOptions1, setPhonePasscodeOptions1] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
+export const [phonePasscodeOptions, setPhonePasscodeOptions] =
+  createSignal<phonePasscodeOptionsState>({
+    one: {
+      initial: true,
+      touched: false,
+    },
+    two: {
+      initial: true,
+      touched: false,
+    },
+    three: {
+      initial: true,
+      touched: false,
+    },
+    four: {
+      initial: true,
+      touched: false,
+    },
+    five: {
+      initial: true,
+      touched: false,
+    },
+    six: {
+      initial: true,
+      touched: false,
+    },
   });
 
-export const [phonePasscodeValue2, setPhonePasscodeValue2] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
-  });
+// export const [phonePasscodeValue1, setPhonePasscodeValue1] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
 
-export const [phonePasscodeOptions2, setPhonePasscodeOptions2] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
-  });
+// export const [phonePasscodeOptions1, setPhonePasscodeOptions1] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
 
-export const [phonePasscodeValue3, setPhonePasscodeValue3] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
-  });
+// export const [phonePasscodeValue2, setPhonePasscodeValue2] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
 
-export const [phonePasscodeOptions3, setPhonePasscodeOptions3] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
-  });
+// export const [phonePasscodeOptions2, setPhonePasscodeOptions2] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
 
-export const [phonePasscodeValue4, setPhonePasscodeValue4] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
-  });
+// export const [phonePasscodeValue3, setPhonePasscodeValue3] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
 
-export const [phonePasscodeOptions4, setPhonePasscodeOptions4] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
-  });
+// export const [phonePasscodeOptions3, setPhonePasscodeOptions3] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
 
-export const [phonePasscodeValue5, setPhonePasscodeValue5] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
-  });
+// export const [phonePasscodeValue4, setPhonePasscodeValue4] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
 
-export const [phonePasscodeOptions5, setPhonePasscodeOptions5] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
-  });
+// export const [phonePasscodeOptions4, setPhonePasscodeOptions4] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
 
-export const [phonePasscodeValue6, setPhonePasscodeValue6] =
-  createSignal<InputValue>({
-    value: "",
-    valid: false,
-  });
+// export const [phonePasscodeValue5, setPhonePasscodeValue5] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
 
-export const [phonePasscodeOptions6, setPhonePasscodeOptions6] =
-  createSignal<InputOptions>({
-    initial: true,
-    touched: false,
-  });
+// export const [phonePasscodeOptions5, setPhonePasscodeOptions5] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
+
+// export const [phonePasscodeValue6, setPhonePasscodeValue6] =
+//   createSignal<InputValue>({
+//     value: "",
+//     valid: false,
+//   });
+
+// export const [phonePasscodeOptions6, setPhonePasscodeOptions6] =
+//   createSignal<InputOptions>({
+//     initial: true,
+//     touched: false,
+//   });
 
 export const updatePhonePasscodeValue = (e: InputEvent) => {
   const inputElement = e.currentTarget as HTMLInputElement;
@@ -237,44 +393,61 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
 
   switch (name) {
     case "one": {
-      setPhonePasscodeValue1(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        one: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
       break;
     }
     case "two": {
-      setPhonePasscodeValue2(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        two: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
-      break;
     }
     case "three": {
-      setPhonePasscodeValue3(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        three: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
       break;
     }
     case "four": {
-      setPhonePasscodeValue4(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        four: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
       break;
     }
     case "five": {
-      setPhonePasscodeValue5(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        five: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
       break;
     }
     case "six": {
-      setPhonePasscodeValue6(() => ({
-        value: value,
-        valid: value.length > 0,
+      setPhonePasscodeValue((prevState) => ({
+        ...prevState,
+        six: {
+          value: value,
+          valid: value.length > 0,
+        },
       }));
       break;
     }
@@ -287,44 +460,62 @@ export const updatePhonePasscodeOptions = (e: FocusEvent) => {
 
   switch (name) {
     case "one": {
-      setPhonePasscodeOptions1((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        one: {
+          initial: false,
+          touched: !prevState.one.touched,
+        },
       }));
       break;
     }
     case "two": {
-      setPhonePasscodeOptions2((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        two: {
+          initial: false,
+          touched: !prevState.two.touched,
+        },
       }));
       break;
     }
     case "three": {
-      setPhonePasscodeOptions3((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        three: {
+          initial: false,
+          touched: !prevState.three.touched,
+        },
       }));
       break;
     }
     case "four": {
-      setPhonePasscodeOptions4((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        four: {
+          initial: false,
+          touched: !prevState.four.touched,
+        },
       }));
       break;
     }
     case "five": {
-      setPhonePasscodeOptions5((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        five: {
+          initial: false,
+          touched: !prevState.five.touched,
+        },
       }));
       break;
     }
     case "six": {
-      setPhonePasscodeOptions6((prevValue) => ({
-        initial: false,
-        touched: !prevValue.touched,
+      setPhonePasscodeOptions((prevState) => ({
+        ...prevState,
+        six: {
+          initial: false,
+          touched: !prevState.six.touched,
+        },
       }));
       break;
     }
@@ -333,4 +524,60 @@ export const updatePhonePasscodeOptions = (e: FocusEvent) => {
 
 export const updatePhonePasscode = (passcode: string) => {
   setPhonePasscode(passcode);
+};
+
+export const resetPhonePasscode = () => {
+  setPhonePasscodeValue(() => ({
+    one: {
+      value: "",
+      valid: false,
+    },
+    two: {
+      value: "",
+      valid: false,
+    },
+    three: {
+      value: "",
+      valid: false,
+    },
+    four: {
+      value: "",
+      valid: false,
+    },
+    five: {
+      value: "",
+      valid: false,
+    },
+    six: {
+      value: "",
+      valid: false,
+    },
+  }));
+
+  setPhonePasscodeOptions(() => ({
+    one: {
+      initial: true,
+      touched: false,
+    },
+    two: {
+      initial: true,
+      touched: false,
+    },
+    three: {
+      initial: true,
+      touched: false,
+    },
+    four: {
+      initial: true,
+      touched: false,
+    },
+    five: {
+      initial: true,
+      touched: false,
+    },
+    six: {
+      initial: true,
+      touched: false,
+    },
+  }));
 };

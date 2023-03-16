@@ -7,9 +7,10 @@ import { CountdownTimer } from "../../../components/timers/CountdownTimer";
 import { PhonePasscodeInput } from "../../../components/forms/PhonePasscodeInput";
 import { TextInput } from "../../../components/forms/TextInput";
 import { FormButton } from "../../../components/buttons/FormButton";
+import { showLoginForm, hideLoginForm } from "../../../animations";
 import {
   phonePasscode,
-  phonePasscodeValue6,
+  phonePasscodeValue,
   firstNameValue,
   firstNameOptions,
   emailAddress,
@@ -18,6 +19,7 @@ import {
   callSignOptions,
   updateInputValue,
   updateInputOptions,
+  showNewMemberPasscodeForm,
 } from "../../../../lib/loginStore";
 
 const Container = styled("form")`

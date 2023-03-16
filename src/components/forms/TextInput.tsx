@@ -2,7 +2,7 @@ import { createEffect, createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
-import { phonePasscodeValue6 } from "../../../lib/loginStore";
+import { phonePasscodeValue } from "../../../lib/loginStore";
 import { textInputActive } from "../../animations";
 import type { UpdateValueFunction, UpdateOptionsFunction } from "../../types";
 
@@ -86,7 +86,7 @@ export const TextInput: Component<InputProps> = (props) => {
   let underlineRef: HTMLDivElement;
 
   createEffect(() => {
-    if (phonePasscodeValue6().valid && props.inputName === "firstName") {
+    if (phonePasscodeValue().six.valid && props.inputName === "firstName") {
       inputRef.focus();
     }
 

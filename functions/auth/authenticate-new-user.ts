@@ -69,8 +69,6 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       callSign: callSign,
     };
 
-    const newUrl = new URL(request.url);
-
     const saveUserReq = new Request("/create-user", {
       method: "POST",
       headers: {

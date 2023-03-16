@@ -2,8 +2,7 @@ import { createMemo } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
-import { EnterPhoneForm } from "./EnterPhoneForm";
-import { VerifyPhoneForm } from "./VerifyPhoneForm";
+import { PhonePasscodeForm } from "./PhonePasscodeForm";
 
 const Container = styled("div")`
   position: relative;
@@ -55,7 +54,7 @@ const LoginView: Component = () => {
 
   return (
     <Container>
-      <VerifyPhoneForm />
+      <PhonePasscodeForm />
       <Galaxy style={galaxy1Styles()} />
       <Galaxy style={galaxy2Styles()} />
     </Container>

@@ -4,18 +4,8 @@ import type { Component } from "solid-js";
 
 import { SingleDigitInput } from "./SingleDigitInput";
 import {
-  phonePasscodeValue1,
-  phonePasscodeOptions1,
-  phonePasscodeValue2,
-  phonePasscodeOptions2,
-  phonePasscodeValue3,
-  phonePasscodeOptions3,
-  phonePasscodeValue4,
-  phonePasscodeOptions4,
-  phonePasscodeValue5,
-  phonePasscodeOptions5,
-  phonePasscodeValue6,
-  phonePasscodeOptions6,
+  phonePasscodeValue,
+  phonePasscodeOptions,
   updatePhonePasscodeValue,
   updatePhonePasscodeOptions,
   setPhonePasscode,
@@ -37,12 +27,12 @@ export const PhonePasscodeInput: Component = () => {
   let inputRef6: HTMLInputElement;
 
   createEffect(() => {
-    const valid1 = phonePasscodeValue1().valid;
-    const valid2 = phonePasscodeValue2().valid;
-    const valid3 = phonePasscodeValue3().valid;
-    const valid4 = phonePasscodeValue4().valid;
-    const valid5 = phonePasscodeValue5().valid;
-    const valid6 = phonePasscodeValue6().valid;
+    const valid1 = phonePasscodeValue().one.valid;
+    const valid2 = phonePasscodeValue().two.valid;
+    const valid3 = phonePasscodeValue().three.valid;
+    const valid4 = phonePasscodeValue().four.valid;
+    const valid5 = phonePasscodeValue().five.valid;
+    const valid6 = phonePasscodeValue().six.valid;
 
     if (!valid1 && !valid2 && !valid3 && !valid4 && !valid5 && !valid6) {
       inputRef1.focus();
@@ -74,12 +64,12 @@ export const PhonePasscodeInput: Component = () => {
   });
 
   createMemo(() => {
-    if (phonePasscodeValue6().valid) {
-      const passcode = `${phonePasscodeValue1().value}${
-        phonePasscodeValue2().value
-      }${phonePasscodeValue3().value}${phonePasscodeValue4().value}${
-        phonePasscodeValue5().value
-      }${phonePasscodeValue6().value}`;
+    if (phonePasscodeValue().six.valid) {
+      const passcode = `${phonePasscodeValue().one.value}${
+        phonePasscodeValue().two.value
+      }${phonePasscodeValue().three.value}${phonePasscodeValue().four.value}${
+        phonePasscodeValue().five.value
+      }${phonePasscodeValue().six.value}`;
 
       setPhonePasscode(passcode);
     }
@@ -93,10 +83,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="one"
         labelFor="one"
         labelName="one"
-        value={phonePasscodeValue1().value}
-        valid={phonePasscodeValue1().valid}
-        initial={phonePasscodeOptions1().initial}
-        touched={phonePasscodeOptions1().touched}
+        value={phonePasscodeValue().one.value}
+        valid={phonePasscodeValue().one.valid}
+        initial={phonePasscodeOptions().one.initial}
+        touched={phonePasscodeOptions().one.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />
@@ -106,10 +96,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="two"
         labelFor="two"
         labelName="two"
-        value={phonePasscodeValue2().value}
-        valid={phonePasscodeValue2().valid}
-        initial={phonePasscodeOptions2().initial}
-        touched={phonePasscodeOptions2().touched}
+        value={phonePasscodeValue().two.value}
+        valid={phonePasscodeValue().two.valid}
+        initial={phonePasscodeOptions().two.initial}
+        touched={phonePasscodeOptions().two.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />
@@ -119,10 +109,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="three"
         labelFor="three"
         labelName="three"
-        value={phonePasscodeValue3().value}
-        valid={phonePasscodeValue3().valid}
-        initial={phonePasscodeOptions3().initial}
-        touched={phonePasscodeOptions3().touched}
+        value={phonePasscodeValue().three.value}
+        valid={phonePasscodeValue().three.valid}
+        initial={phonePasscodeOptions().three.initial}
+        touched={phonePasscodeOptions().three.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />
@@ -132,10 +122,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="four"
         labelFor="four"
         labelName="four"
-        value={phonePasscodeValue4().value}
-        valid={phonePasscodeValue4().valid}
-        initial={phonePasscodeOptions4().initial}
-        touched={phonePasscodeOptions4().touched}
+        value={phonePasscodeValue().four.value}
+        valid={phonePasscodeValue().four.valid}
+        initial={phonePasscodeOptions().four.initial}
+        touched={phonePasscodeOptions().four.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />
@@ -145,10 +135,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="five"
         labelFor="five"
         labelName="five"
-        value={phonePasscodeValue5().value}
-        valid={phonePasscodeValue5().valid}
-        initial={phonePasscodeOptions5().initial}
-        touched={phonePasscodeOptions5().touched}
+        value={phonePasscodeValue().five.value}
+        valid={phonePasscodeValue().five.valid}
+        initial={phonePasscodeOptions().five.initial}
+        touched={phonePasscodeOptions().five.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />
@@ -158,10 +148,10 @@ export const PhonePasscodeInput: Component = () => {
         inputName="six"
         labelFor="six"
         labelName="six"
-        value={phonePasscodeValue6().value}
-        valid={phonePasscodeValue6().valid}
-        initial={phonePasscodeOptions6().initial}
-        touched={phonePasscodeOptions6().touched}
+        value={phonePasscodeValue().six.value}
+        valid={phonePasscodeValue().six.valid}
+        initial={phonePasscodeOptions().six.initial}
+        touched={phonePasscodeOptions().six.touched}
         updateInputValue={updatePhonePasscodeValue}
         updateInputOptions={updatePhonePasscodeOptions}
       />

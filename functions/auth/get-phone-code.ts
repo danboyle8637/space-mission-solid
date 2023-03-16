@@ -5,6 +5,7 @@ import type {
   Env,
   LoginPhoneReqBody,
   StytchLoginCreateRes,
+  UserLoginData,
 } from "../../src/types/api";
 
 export const onRequest: PagesFunction<Env> = async (context) => {
@@ -54,7 +55,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       // true if new - false if already exist
       const userCreated = loginData.user_created;
 
-      const resBody = {
+      const resBody: UserLoginData = {
         phoneId: phoneId,
         userCreated: userCreated,
       };
