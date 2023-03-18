@@ -1,6 +1,6 @@
 import { PagesFunction } from "@cloudflare/workers-types";
 
-import { getErrorMessage } from "../../src/utils/helpers";
+import { getErrorMessage, hashData } from "../../src/utils/helpers";
 import type {
   Env,
   LoginPhoneReqBody,
@@ -36,11 +36,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         phone_number: phoneNumber,
       };
 
+      const userPassword = `${stytchId}:${stytchSecret}`;
+      const hashedUserPassword = hashData(userPassword);
+
       const loginRes = await fetch(stytchLoginCreateUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${stytchId}:${stytchSecret}`,
+          Authorization: `Basic ${hashedUserPassword}`,
         },
         body: JSON.stringify(loginBody),
       });
