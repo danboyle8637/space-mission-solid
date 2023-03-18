@@ -37,7 +37,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       };
 
       const userPassword = `${stytchId}:${stytchSecret}`;
-      const hashedUserPassword = hashData(userPassword);
+      const hashedUserPassword = btoa(userPassword);
 
       const loginRes = await fetch(stytchLoginCreateUrl, {
         method: "POST",
