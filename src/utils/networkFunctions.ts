@@ -27,10 +27,6 @@ export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
   const codeData: UserLoginData = await getCodeRes.json();
   const { phoneId, userCreated } = codeData;
 
-  if (!phoneId || !userCreated) {
-    throw new Error(`No phoneId: ${phoneId} or userCreated: ${userCreated}`);
-  }
-
   console.log(codeData);
 
   toggleIsMakingNetworkRequest();
