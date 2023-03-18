@@ -61,6 +61,7 @@ const PhonePasscodeForm: Component = () => {
   createMemo(() => {
     if (!showPhoneForm() && userLoginData().phoneId !== "") {
       hideLoginForm(phoneFormRef).finished.then(() => {
+        console.log("Animation done looking to see if new or returning member");
         const isNewUser = userLoginData().userCreated;
 
         if (isNewUser) {

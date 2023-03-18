@@ -28,8 +28,11 @@ export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
   const { phoneId, userCreated } = codeData;
 
   if (!phoneId || !userCreated) {
-    throw new Error("No phoneId or userCreated data.");
+    const errorMessage = await getCodeRes.text();
+    throw new Error(errorMessage);
   }
+
+  console.log(codeData);
 
   toggleIsMakingNetworkRequest();
   updateUserLoginData(phoneId, userCreated);
@@ -43,13 +46,14 @@ export const fetchAuthenticateNewMember = async (
   body: AuthenticateNewMemberBody
 ) => {
   const url = "/auth/authenticate-new-user";
-  const newMemberReq = await fetch(url, {
+  const newMemberRes = await fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
   });
 
-  if (newMemberReq.status !== 200) {
-    throw new Error("Could not create new User");
+  if (newMemberRes.status !== 200) {
+    const errorMessage = await newMemberRes.text();
+    throw new Error(errorMessage);
   }
 
   const userData = {
@@ -57,7 +61,7 @@ export const fetchAuthenticateNewMember = async (
     callSign: body.callSign,
   };
 
-  const testMessage = await newMemberReq.json();
+  const testMessage = await newMemberRes.json();
 
   console.log(testMessage);
 

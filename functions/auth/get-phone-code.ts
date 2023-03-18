@@ -40,7 +40,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${stytchId}:${stytchSecret}`,
+          Authorization: `${stytchId}:${stytchSecret}`,
         },
         body: JSON.stringify(loginBody),
       });
@@ -55,6 +55,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       const phoneId = loginData.phone_id;
       // true if new - false if already exist
       const userCreated = loginData.user_created;
+
+      if (!phoneId || userCreated) {
+        throw new Error(
+          "Something went wrong with Stytch request and phone id and userCreated are not here."
+        );
+      }
 
       const resBody: UserLoginData = {
         phoneId: phoneId,
