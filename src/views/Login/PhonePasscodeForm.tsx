@@ -97,7 +97,7 @@ const PhonePasscodeForm: Component = () => {
       await fetchSendPhoneCode(phoneBody);
     } catch (error) {
       // Open modal and talk about the error
-      console.log(getErrorMessage(error));
+      console.log("Error from server: ", getErrorMessage(error));
       resetLoginForm();
     }
   };

@@ -28,8 +28,7 @@ export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
   const { phoneId, userCreated } = codeData;
 
   if (!phoneId || !userCreated) {
-    const errorMessage = await getCodeRes.text();
-    throw new Error(errorMessage);
+    throw new Error(`No phoneId: ${phoneId} or userCreated: ${userCreated}`);
   }
 
   console.log(codeData);

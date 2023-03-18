@@ -1,6 +1,6 @@
 import { PagesFunction } from "@cloudflare/workers-types";
 
-import { getErrorMessage, hashData } from "../../src/utils/helpers";
+import { getErrorMessage } from "../../src/utils/helpers";
 import type {
   Env,
   LoginPhoneReqBody,
