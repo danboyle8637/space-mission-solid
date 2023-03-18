@@ -4,6 +4,7 @@ import type { Component, JSXElement, JSX } from "solid-js";
 
 interface ButtonProps {
   isValid: boolean;
+  isDisabled: boolean;
   children: JSXElement;
 }
 
@@ -45,7 +46,11 @@ export const FormButton: Component<ButtonProps> = (props) => {
   );
 
   return (
-    <Button type="submit" style={styles()} disabled={!props.isValid}>
+    <Button
+      type="submit"
+      style={styles()}
+      disabled={!props.isValid || props.isDisabled}
+    >
       {child()}
     </Button>
   );

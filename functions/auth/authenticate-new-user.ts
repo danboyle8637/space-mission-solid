@@ -1,7 +1,7 @@
 import type { PagesFunction } from "@cloudflare/workers-types";
 import type {
   Env,
-  AuthenticateNewUserBody,
+  AuthenticateNewMemberBody,
   StytchAuthenticateBody,
   StytchAuthenticateRes,
   UserKVDoc,
@@ -12,7 +12,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
 
   const formattedReq = new Response(request.body);
-  const body: AuthenticateNewUserBody = await formattedReq.json();
+  const body: AuthenticateNewMemberBody = await formattedReq.json();
   const { phoneId, code, firstName, emailAddress, callSign } = body;
 
   if (!phoneId || !code) {
@@ -69,16 +69,21 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       callSign: callSign,
     };
 
-    const saveUserReq = new Request("/create-user", {
+    const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
+
+    const testUrl = "/test";
+    const actionUrl = "/create-user";
+
+    // ! THIS IS THE TEST
+    const saveUserReq = new Request(testUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         user: userId,
+        "Set-Cookie": cookieHeader,
       },
       body: JSON.stringify(saveUserBody),
     });
-
-    const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
     const userResponse = await context.env.USER_WORKER.fetch(saveUserReq);
     userResponse.headers.set("Set-Cookie", cookieHeader);

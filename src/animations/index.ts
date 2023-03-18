@@ -124,7 +124,7 @@ export const modalEnter = (modal: HTMLDialogElement) => {
 };
 
 export const modalExit = (modal: HTMLDialogElement) => {
-  animate(
+  return animate(
     modal,
     {
       transform: ["translate(-50%, -50%)", "translate(-50%, -56%)"],
@@ -135,7 +135,7 @@ export const modalExit = (modal: HTMLDialogElement) => {
 };
 
 export const hideLoginForm = (form: HTMLDivElement) => {
-  animate(
+  return animate(
     form,
     {
       y: [0, -20],

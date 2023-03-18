@@ -35,7 +35,7 @@ export const ImageUploadForm: Component = () => {
     <FormContainer onSubmit={handleAvatarImageForm}>
       <ImageUploadInput />
       <ButtonContainer>
-        <FormButton isValid={avatarImageData().length > 0}>
+        <FormButton isValid={avatarImageData().length > 0} isDisabled={false}>
           Save Space Avatar
         </FormButton>
       </ButtonContainer>

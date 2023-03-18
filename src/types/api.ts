@@ -37,7 +37,7 @@ export interface LoginPhoneReqBody {
   phoneNumber: string;
 }
 
-export interface AuthenticateNewUserBody {
+export interface AuthenticateNewMemberBody {
   phoneId: string;
   code: string;
   firstName: string;
@@ -45,7 +45,7 @@ export interface AuthenticateNewUserBody {
   callSign: string;
 }
 
-export interface AuthenticateExistingUserBody {
+export interface AuthenticateCurrentMemberBody {
   phoneId: string;
   code: string;
 }

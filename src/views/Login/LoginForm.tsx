@@ -1,10 +1,7 @@
-import { useNavigate } from "@solidjs/router";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
-import { TextInput } from "../../components/forms/TextInput";
 import { PhoneTextInput } from "../../components/forms/PhoneTextInput";
-import { PhonePasscodeInput } from "../../components/forms/PhonePasscodeInput";
 import { FormButton } from "../../components/buttons/FormButton";
 import { getErrorMessage } from "../../utils/helpers";
 import {
@@ -17,13 +14,8 @@ import {
   updatePhoneNumberValue,
   updatePhoneNumberOptions,
   resetLoginForm,
+  isMakingNetworkRequest,
 } from "../../../lib/loginStore";
-import { updateUserLoginData } from "../../../lib/userStore";
-import type {
-  LoginEmailReqBody,
-  LoginPhoneReqBody,
-  UserLoginData,
-} from "../../types/api";
 
 interface FormProps {
   handleFormSubmit: (e: SubmitEvent) => void;
@@ -76,8 +68,11 @@ export const LoginForm: Component<FormProps> = (props) => {
         updateInputOptions={updatePhoneNumberOptions}
       />
       <ButtonContainer>
-        <FormButton isValid={emailAddress().valid || phoneNumberValue().valid}>
-          Login
+        <FormButton
+          isValid={emailAddress().valid || phoneNumberValue().valid}
+          isDisabled={isMakingNetworkRequest()}
+        >
+          {isMakingNetworkRequest() ? "Check Your Phone" : "Login"}
         </FormButton>
       </ButtonContainer>
     </FormContainer>

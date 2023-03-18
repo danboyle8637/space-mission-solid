@@ -17,12 +17,6 @@ export const toggleIsMakingNetworkRequest = () => {
   setIsMakingNetworkRequest((prevValue) => !prevValue);
 };
 
-export const [isTextSent, setIsTextSent] = createSignal<boolean>(false);
-
-export const toggleIsTextSent = () => {
-  setIsTextSent((prevValue) => !prevValue);
-};
-
 export const [isPhoneVerified, setIsPhoneVerified] =
   createSignal<boolean>(false);
 
@@ -37,7 +31,7 @@ export const updateShowPhoneForm = (shouldShow: boolean) => {
 };
 
 export const [showNewMemberPasscodeForm, setShowNewMemberPasscodeForm] =
-  createSignal<boolean>(false);
+  createSignal<boolean>(true);
 
 export const updateShowNewMemberPasscodeForm = (shouldShow: boolean) => {
   setShowNewMemberPasscodeForm(shouldShow);
@@ -46,7 +40,7 @@ export const updateShowNewMemberPasscodeForm = (shouldShow: boolean) => {
 export const [
   showReturningMemberPasscodeForm,
   setShowReturningMemberPasscodeForm,
-] = createSignal<boolean>(false);
+] = createSignal<boolean>(true);
 
 export const updateShowReturningMemberPasscodeForm = (shouldShow: boolean) => {
   setShowReturningMemberPasscodeForm(shouldShow);
@@ -391,13 +385,16 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
   const name = inputElement.name;
   const value = inputElement.value;
 
+  const regex = /^[1-9]+$/;
+  const valid = regex.test(value);
+
   switch (name) {
     case "one": {
       setPhonePasscodeValue((prevState) => ({
         ...prevState,
         one: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
       break;
@@ -407,16 +404,17 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
         ...prevState,
         two: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
+      break;
     }
     case "three": {
       setPhonePasscodeValue((prevState) => ({
         ...prevState,
         three: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
       break;
@@ -426,7 +424,7 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
         ...prevState,
         four: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
       break;
@@ -436,7 +434,7 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
         ...prevState,
         five: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
       break;
@@ -446,7 +444,7 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
         ...prevState,
         six: {
           value: value,
-          valid: value.length > 0,
+          valid: valid,
         },
       }));
       break;

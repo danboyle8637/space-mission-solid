@@ -1,0 +1,92 @@
+import {
+  toggleIsMakingNetworkRequest,
+  resetLoginForm,
+  updateShowPhoneForm,
+  updateShowNewMemberPasscodeForm,
+  updateShowReturningMemberPasscodeForm,
+} from "../../lib/loginStore";
+import { updateUserLoginData } from "../../lib/userStore";
+import type {
+  UserLoginData,
+  LoginPhoneReqBody,
+  AuthenticateNewMemberBody,
+  AuthenticateCurrentMemberBody,
+} from "../types/api";
+
+export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
+  const getCodeRes = await fetch("/auth/get-phone-code", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  if (getCodeRes.status !== 200) {
+    throw new Error(
+      "Activate error modal or drawer and acknowledge the error as you reset the form"
+    );
+  }
+
+  const codeData: UserLoginData = await getCodeRes.json();
+  const { phoneId, userCreated } = codeData;
+
+  if (!phoneId || !userCreated) {
+    throw new Error("No phoneId or userCreated data.");
+  }
+
+  toggleIsMakingNetworkRequest();
+  updateUserLoginData(phoneId, userCreated);
+  resetLoginForm();
+  updateShowPhoneForm(false);
+
+  return;
+};
+
+export const fetchAuthenticateNewMember = async (
+  body: AuthenticateNewMemberBody
+) => {
+  const url = "/auth/authenticate-new-user";
+  const newMemberReq = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  if (newMemberReq.status !== 200) {
+    throw new Error("Could not create new User");
+  }
+
+  const userData = {
+    firstName: body.firstName,
+    callSign: body.callSign,
+  };
+
+  const testMessage = await newMemberReq.json();
+
+  console.log(testMessage);
+
+  toggleIsMakingNetworkRequest();
+  updateShowNewMemberPasscodeForm(false);
+
+  return testMessage;
+};
+
+export const fetchAuthenticateCurrentMember = async (
+  body: AuthenticateCurrentMemberBody
+) => {
+  const url = "/auth/authenticate-user";
+  const currentMemberReq = await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  if (currentMemberReq.status !== 200) {
+    throw new Error("Could not create new User");
+  }
+
+  const testMessage = await currentMemberReq.json();
+
+  console.log(testMessage);
+
+  toggleIsMakingNetworkRequest();
+  updateShowReturningMemberPasscodeForm(false);
+
+  return testMessage;
+};

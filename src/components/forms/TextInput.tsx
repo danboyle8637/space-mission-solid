@@ -1,4 +1,4 @@
-import { createEffect, createMemo } from "solid-js";
+import { createMemo, onMount } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component, JSX } from "solid-js";
 
@@ -20,6 +20,7 @@ interface InputProps {
   touched: boolean;
   updateInputValue: UpdateValueFunction;
   updateInputOptions: UpdateOptionsFunction;
+  isDisabled: boolean;
 }
 
 const InputContainer = styled("div")`
@@ -85,7 +86,7 @@ export const TextInput: Component<InputProps> = (props) => {
   let inputRef: HTMLInputElement;
   let underlineRef: HTMLDivElement;
 
-  createEffect(() => {
+  onMount(() => {
     if (phonePasscodeValue().six.valid && props.inputName === "firstName") {
       inputRef.focus();
     }
@@ -121,6 +122,7 @@ export const TextInput: Component<InputProps> = (props) => {
         onInput={props.updateInputValue}
         onFocus={props.updateInputOptions}
         onBlur={props.updateInputOptions}
+        disabled={props.isDisabled}
       />
       <UnderlineContainer>
         <BaseUnderline />

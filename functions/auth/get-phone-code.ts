@@ -21,6 +21,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   try {
+    // Block any other phone from signing up to Space Mission
     if (
       phoneNumber === context.env.DAN_PHONE ||
       phoneNumber === context.env.KINDAL_PHONE

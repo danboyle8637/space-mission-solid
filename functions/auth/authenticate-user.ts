@@ -1,7 +1,7 @@
 import type { PagesFunction } from "@cloudflare/workers-types";
 import type {
   Env,
-  AuthenticateExistingUserBody,
+  AuthenticateCurrentMemberBody,
   StytchAuthenticateBody,
   StytchAuthenticateRes,
   UserKVDoc,
@@ -13,7 +13,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
 
   const formattedReq = new Response(request.body);
-  const body: AuthenticateExistingUserBody = await formattedReq.json();
+  const body: AuthenticateCurrentMemberBody = await formattedReq.json();
   const { phoneId, code } = body;
 
   if (!phoneId || !code) {
@@ -66,11 +66,23 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    // TODO - You still want to go get the user so they have their data when they get pushed to the dashboard.
+    const testUrl = "/test";
+    const actionUrl = "/get-user";
 
-    const response = new Response("Authenticated", { status: 200 });
-    response.headers.set("Set-Cookie", cookieHeader);
-    return response;
+    // ! THIS IS THE TEST
+    const saveUserReq = new Request(testUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        user: userId,
+        "Set-Cookie": cookieHeader,
+      },
+    });
+
+    const userResponse = await context.env.USER_WORKER.fetch(saveUserReq);
+    userResponse.headers.set("Set-Cookie", cookieHeader);
+
+    return userResponse;
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;
