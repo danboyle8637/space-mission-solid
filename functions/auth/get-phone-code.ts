@@ -40,13 +40,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${stytchId}:${stytchSecret}`,
+          Authorization: `Basic ${stytchId}:${stytchSecret}`,
         },
         body: JSON.stringify(loginBody),
       });
 
       if (loginRes.status !== 200) {
-        const response = new Response("Failed to login", { status: 500 });
+        const errorMessage = await loginRes.text();
+        const response = new Response(`Failed to Login: ${errorMessage}`, {
+          status: 500,
+        });
         return response;
       }
 

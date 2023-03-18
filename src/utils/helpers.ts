@@ -60,7 +60,7 @@ export const getExpiresAtTimestamp = (expiresAt: string) => {
 };
 
 export const sanitizePhoneNumber = (phoneNumber: string) => {
-  let cleanedNumber: string = "1";
+  let cleanedNumber: string = "+1";
 
   for (let i = 0; i < phoneNumber.length; i++) {
     if (
