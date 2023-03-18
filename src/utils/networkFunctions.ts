@@ -20,9 +20,8 @@ export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
   });
 
   if (getCodeRes.status !== 200) {
-    throw new Error(
-      "Activate error modal or drawer and acknowledge the error as you reset the form"
-    );
+    const errorMessage = await getCodeRes.text();
+    throw new Error(errorMessage);
   }
 
   const codeData: UserLoginData = await getCodeRes.json();
