@@ -44,6 +44,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       body: JSON.stringify(body),
     });
 
+    if (authRes.status !== 200) {
+      const errorMessage = await authRes.text();
+      const response = new Response(`Failed to verify phone: ${errorMessage}`, {
+        status: 500,
+      });
+      return response;
+    }
+
     const authData: StytchAuthenticateRes = await authRes.json();
     const userId = authData.user_id;
     const sessionToken = authData.session_token;

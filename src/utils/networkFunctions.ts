@@ -70,16 +70,17 @@ export const fetchAuthenticateCurrentMember = async (
   body: AuthenticateCurrentMemberBody
 ) => {
   const url = "/auth/authenticate-user";
-  const currentMemberReq = await fetch(url, {
+  const currentMemberRes = await fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
   });
 
-  if (currentMemberReq.status !== 200) {
-    throw new Error("Could not create new User");
+  if (currentMemberRes.status !== 200) {
+    const errorMessage = await currentMemberRes.text();
+    throw new Error(errorMessage);
   }
 
-  const testMessage = await currentMemberReq.json();
+  const testMessage = await currentMemberRes.json();
 
   console.log(testMessage);
 
