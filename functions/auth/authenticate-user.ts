@@ -33,11 +33,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       session_duration_minutes: 10080,
     };
 
+    const userPassword = `${stytchId}:${stytchSecret}`;
+    const encodedUserPassword = btoa(userPassword);
+
     const authRes = await fetch(stytchAuthUrl, {
       method: "POST",
       headers: {
         "Content-Type": "appalication/json",
-        Authenticate: `Basic ${stytchId}:${stytchSecret}`,
+        Authenticate: `Basic ${encodedUserPassword}`,
       },
       body: JSON.stringify(body),
     });
