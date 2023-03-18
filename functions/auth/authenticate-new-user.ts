@@ -74,24 +74,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    const testUrl = "/test";
-    const actionUrl = "/create-user";
+    const response = new Response("User created", { status: 200 });
+    response.headers.set("Set-Cookie", cookieHeader);
 
-    // ! THIS IS THE TEST
-    const saveUserReq = new Request(testUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        user: userId,
-        "Set-Cookie": cookieHeader,
-      },
-      body: JSON.stringify(saveUserBody),
-    });
-
-    const userResponse = await context.env.USER_WORKER.fetch(saveUserReq);
-    userResponse.headers.set("Set-Cookie", cookieHeader);
-
-    return userResponse;
+    return response;
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;
