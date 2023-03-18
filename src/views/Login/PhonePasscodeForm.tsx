@@ -14,7 +14,7 @@ import {
 } from "../../../lib/loginStore";
 import { userLoginData, updateUserLoginData } from "../../../lib/userStore";
 import { showLoginForm, hideLoginForm } from "../../animations";
-import { getErrorMessage } from "../../utils/helpers";
+import { getErrorMessage, sanitizePhoneNumber } from "../../utils/helpers";
 import { fetchSendPhoneCode } from "../../utils/networkFunctions";
 import type {
   LoginEmailReqBody,
@@ -86,8 +86,10 @@ const PhonePasscodeForm: Component = () => {
     //   emailAddress: email,
     // };
 
+    const sanitizedPhoneNumber = sanitizePhoneNumber(phoneNumber);
+
     const phoneBody: LoginPhoneReqBody = {
-      phoneNumber: phoneNumber,
+      phoneNumber: sanitizedPhoneNumber,
     };
 
     try {

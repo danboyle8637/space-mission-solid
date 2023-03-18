@@ -58,3 +58,21 @@ export const getExpiresAtTimestamp = (expiresAt: string) => {
   const timestamp = date.getTime();
   return timestamp;
 };
+
+export const sanitizePhoneNumber = (phoneNumber: string) => {
+  let cleanedNumber: string = "1";
+
+  for (let i = 0; i < phoneNumber.length; i++) {
+    if (
+      phoneNumber[i] === "(" ||
+      phoneNumber[i] === ")" ||
+      phoneNumber[i] === "-" ||
+      phoneNumber[i] === " "
+    ) {
+      continue;
+    }
+    cleanedNumber = cleanedNumber + phoneNumber[i];
+  }
+
+  return cleanedNumber;
+};
