@@ -12,6 +12,11 @@ import { getErrorMessage } from "../../src/utils/helpers";
 export const onRequest: PagesFunction<Env> = async (context) => {
   const request = context.request;
 
+  // Clonse request... alter url and add new pathname and see if you can pass to worker
+  const userRequest = request.clone();
+  const url = new URL(userRequest.url);
+  url.hostname;
+
   const formattedReq = new Response(request.body);
   const body: AuthenticateCurrentMemberBody = await formattedReq.json();
   const { phoneId, code } = body;
@@ -77,7 +82,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    const userWorkerReq = new Request("/test", {
+    const userWorkerReq = new Request("/api/user/test", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
