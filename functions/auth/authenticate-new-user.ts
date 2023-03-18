@@ -39,7 +39,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       method: "POST",
       headers: {
         "Content-Type": "appalication/json",
-        Authenticate: `Basic ${encodedUserPassword}`,
+        Authorization: `Basic ${encodedUserPassword}`,
       },
       body: JSON.stringify(body),
     });

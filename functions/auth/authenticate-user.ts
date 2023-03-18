@@ -40,7 +40,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       method: "POST",
       headers: {
         "Content-Type": "appalication/json",
-        Authenticate: `Basic ${encodedUserPassword}`,
+        Authorization: `Basic ${encodedUserPassword}`,
       },
       body: JSON.stringify(body),
     });
@@ -77,10 +77,23 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    const response = new Response("Member authenticated", { status: 200 });
-    response.headers.set("Set-Cookie", cookieHeader);
+    const userWorkerReq = new Request("/test", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        user: userId,
+      },
+      body: JSON.stringify(userKVDoc),
+    });
 
-    return response;
+    const userWorkerResponse = await context.env.USER_WORKER.fetch(
+      userWorkerReq
+    );
+    userWorkerResponse.headers.set("Set-Cookie", cookieHeader);
+
+    // const response = new Response("Member authenticated", { status: 200 });
+
+    return userWorkerResponse;
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;
