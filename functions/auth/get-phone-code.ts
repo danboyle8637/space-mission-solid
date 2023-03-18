@@ -27,7 +27,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       phoneNumber === context.env.KINDAL_PHONE
     ) {
       const stytchLoginCreateUrl =
-        "https://test.stytch.com/v1/magic_links/email/login_or_create";
+        "https://test.stytch.com/v1/otps/sms/login_or_create";
 
       const stytchId = context.env.STYTCH_PROJECT_ID;
       const stytchSecret = context.env.STYTCH_SECRET;
