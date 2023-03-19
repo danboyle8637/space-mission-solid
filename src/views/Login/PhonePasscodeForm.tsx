@@ -65,12 +65,14 @@ const PhonePasscodeForm: Component = () => {
         const isNewUser = userLoginData().userCreated;
 
         if (isNewUser) {
+          console.log("This is a new user");
           navigate("/new-member");
-          return;
         }
 
-        navigate("/current-member");
-        return;
+        if (!isNewUser) {
+          console.log("This is a returning user");
+          navigate("/current-member");
+        }
       });
     }
   });

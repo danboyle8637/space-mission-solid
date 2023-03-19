@@ -49,7 +49,9 @@ const DashboardView: Component = () => {
       <MissionCards missions={missions} />
       <ErrorBoundary fallback={<ServerData>Error Getting Data</ServerData>}>
         <ServerData>
-          {testData.state === "ready" ? testData()! : "Waiting For Data"}
+          {testData.state === "ready"
+            ? JSON.stringify(testData()!)
+            : "Waiting For Data"}
         </ServerData>
       </ErrorBoundary>
     </ViewContainer>

@@ -65,16 +65,12 @@ const CurrentUserForm: Component = () => {
 
     toggleIsMakingNetworkRequest();
 
-    // * 200 stattus
-    setTimeout(() => {
-      toggleIsMakingNetworkRequest();
-      updateShowReturningMemberPasscodeForm(false);
-    }, 1000);
-
     const verifyMemberBody: AuthenticateCurrentMemberBody = {
       code: code,
       phoneId: userLoginData().phoneId,
     };
+
+    console.log(verifyMemberBody);
 
     try {
       await fetchAuthenticateCurrentMember(verifyMemberBody);
