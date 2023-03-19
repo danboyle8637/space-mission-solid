@@ -53,11 +53,6 @@ export const fetchAuthenticateNewMember = async (
     throw new Error(errorMessage);
   }
 
-  const userData = {
-    firstName: body.firstName,
-    callSign: body.callSign,
-  };
-
   const testMessage = await newMemberRes.text();
 
   console.log(testMessage);
@@ -65,7 +60,7 @@ export const fetchAuthenticateNewMember = async (
   toggleIsMakingNetworkRequest();
   updateShowNewMemberPasscodeForm(false);
 
-  return testMessage;
+  return;
 };
 
 export const fetchAuthenticateCurrentMember = async (
@@ -89,7 +84,7 @@ export const fetchAuthenticateCurrentMember = async (
   toggleIsMakingNetworkRequest();
   updateShowReturningMemberPasscodeForm(false);
 
-  return testMessage;
+  return;
 };
 
 // ************** FRONTEND ************** //

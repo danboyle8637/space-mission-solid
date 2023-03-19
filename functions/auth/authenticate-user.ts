@@ -21,8 +21,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const body: AuthenticateCurrentMemberBody = await formattedReq.json();
   const { phoneId, code } = body;
 
-  if (!phoneId || !code) {
-    const response = new Response("Bad Request", { status: 500 });
+  if (phoneId === undefined && code === undefined) {
+    const response = new Response("Bad Request: No phoneId or code to verify", {
+      status: 500,
+    });
     return response;
   }
 
