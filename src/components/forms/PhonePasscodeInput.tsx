@@ -8,7 +8,7 @@ import {
   phonePasscodeOptions,
   updatePhonePasscodeValue,
   updatePhonePasscodeOptions,
-  setPhonePasscode,
+  updatePhonePasscode,
 } from "../../../lib/loginStore";
 
 const Contianer = styled("form")`
@@ -71,7 +71,7 @@ export const PhonePasscodeInput: Component = () => {
         phonePasscodeValue().five.value
       }${phonePasscodeValue().six.value}`;
 
-      setPhonePasscode(passcode);
+      updatePhonePasscode(passcode);
     }
   });
 

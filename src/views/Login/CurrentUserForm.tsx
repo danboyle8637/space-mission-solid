@@ -70,7 +70,7 @@ const CurrentUserForm: Component = () => {
       phoneId: userLoginData().phoneId,
     };
 
-    console.log(verifyMemberBody);
+    console.log("Request Body Before Going to Verify", verifyMemberBody);
 
     try {
       await fetchAuthenticateCurrentMember(verifyMemberBody);
