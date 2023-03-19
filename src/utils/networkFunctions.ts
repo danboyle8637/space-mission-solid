@@ -58,7 +58,7 @@ export const fetchAuthenticateNewMember = async (
     callSign: body.callSign,
   };
 
-  const testMessage = await newMemberRes.json();
+  const testMessage = await newMemberRes.text();
 
   console.log(testMessage);
 
@@ -82,7 +82,7 @@ export const fetchAuthenticateCurrentMember = async (
     throw new Error(errorMessage);
   }
 
-  const testMessage = await currentMemberRes.json();
+  const testMessage = await currentMemberRes.text();
 
   console.log(testMessage);
 
