@@ -84,23 +84,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
-    const userWorkerReq = new Request(`${reqHostname}/api/user/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        user: userId,
-      },
-      body: JSON.stringify(userKVDoc),
-    });
+    const response = new Response("Authenticated", { status: 200 });
+    response.headers.set("Set-Cookie", cookieHeader);
 
-    const userWorkerResponse = await context.env.USER_WORKER.fetch(
-      userWorkerReq
-    );
-    userWorkerResponse.headers.set("Set-Cookie", cookieHeader);
-
-    // const response = new Response("Member authenticated", { status: 200 });
-
-    return userWorkerResponse;
+    return response;
   } catch (error) {
     const response = new Response(getErrorMessage(error), { status: 500 });
     return response;

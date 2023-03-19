@@ -23,10 +23,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   const request = context.request;
 
-  const token = cookieData[COOKIE_NAME];
+  const sessionKey = cookieData[COOKIE_NAME];
   const workerStamp = Date.now();
 
-  const userDoc = await context.env.SPACE_MISSION_SESSIONS.get(token);
+  const userDoc = await context.env.SPACE_MISSION_SESSIONS.get(sessionKey);
   const userData: UserKVDoc = JSON.parse(userDoc);
   const { userId, expiresAt, sessionId } = userData;
 
@@ -35,7 +35,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   if (expiresTimestamp < workerStamp) {
     // Need to logout and sign back in
     // Clear KV session
-    await context.env.SPACE_MISSION_SESSIONS.delete(token);
+    await context.env.SPACE_MISSION_SESSIONS.delete(sessionKey);
 
     const stytchId = context.env.STYTCH_PROJECT_ID;
     const stytchSecret = context.env.STYTCH_SECRET;

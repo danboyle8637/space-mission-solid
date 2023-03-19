@@ -13,6 +13,8 @@ import type {
   AuthenticateCurrentMemberBody,
 } from "../types/api";
 
+// ************** BACKEND ************** //
+
 export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
   const getCodeRes = await fetch("/auth/get-phone-code", {
     method: "POST",
@@ -88,4 +90,63 @@ export const fetchAuthenticateCurrentMember = async (
   updateShowReturningMemberPasscodeForm(false);
 
   return testMessage;
+};
+
+// ************** FRONTEND ************** //
+
+export const getTestEndpoint = async () => {
+  const url = "/api/user/test";
+
+  const body = {
+    message: "Test response and user Worker are functioning properly.",
+  };
+
+  const testRes = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (testRes.status !== 200) {
+    const errorMessage = await testRes.text();
+    throw new Error(errorMessage);
+  }
+
+  const resData = await testRes.json();
+
+  console.log(resData);
+
+  return;
+};
+
+export const getUser = async () => {
+  const url = "/api/user/get-user";
+
+  const userRes = await fetch(url, {
+    method: "GET",
+  });
+
+  if (userRes.status !== 200) {
+    const errorMessage = await userRes.text();
+    throw new Error(errorMessage);
+  }
+
+  return userRes.json();
+};
+
+export const getMissions = async () => {
+  const url = "/api/mission/get-missions";
+
+  const missionsRes = await fetch(url, {
+    method: "GET",
+  });
+
+  if (missionsRes.status === 200) {
+    const errorMessage = await missionsRes.text();
+    throw new Error(errorMessage);
+  }
+
+  return missionsRes.json();
 };

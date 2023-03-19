@@ -1,10 +1,15 @@
-import { createResource } from "solid-js";
+import { createEffect, createResource, ErrorBoundary } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
 import { Header } from "./Header";
 import { AstronautDataBar } from "./AstronautDataBar";
 import { MissionCards } from "./MissionCards";
+import {
+  getTestEndpoint,
+  getUser,
+  getMissions,
+} from "../../utils/networkFunctions";
 
 import { missions } from "../../../data/missions";
 
@@ -27,7 +32,14 @@ const HeaderContainer = styled("div")`
   justify-items: center;
 `;
 
+const ServerData = styled("pre")`
+  font-size: 2rem;
+  color: var(--accent-teal);
+`;
+
 const DashboardView: Component = () => {
+  const [testData] = createResource(getTestEndpoint);
+
   return (
     <ViewContainer>
       <HeaderContainer>
@@ -35,6 +47,11 @@ const DashboardView: Component = () => {
         <AstronautDataBar />
       </HeaderContainer>
       <MissionCards missions={missions} />
+      <ErrorBoundary fallback={<ServerData>Error Getting Data</ServerData>}>
+        <ServerData>
+          {testData.state === "ready" ? testData()! : "Waiting For Data"}
+        </ServerData>
+      </ErrorBoundary>
     </ViewContainer>
   );
 };
