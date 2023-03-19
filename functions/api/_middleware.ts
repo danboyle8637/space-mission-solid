@@ -22,6 +22,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   }
 
   const request = context.request;
+  const updateRequest = new Request(request);
 
   const sessionKey = cookieData[COOKIE_NAME];
   const workerStamp = Date.now();
@@ -30,8 +31,13 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const userData: UserKVDoc = JSON.parse(userDoc);
   const { userId, expiresAt, sessionId } = userData;
 
+  if (!userId) {
+    throw new Error(`User Id is missing. Login again: ${userId}`);
+  }
+
   const expiresTimestamp = getExpiresAtTimestamp(expiresAt);
 
+  // Checks the expires time
   if (expiresTimestamp < workerStamp) {
     // Need to logout and sign back in
     // Clear KV session
@@ -68,6 +74,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
   }
 
-  request.headers.set("user", userId);
-  return context.next();
+  // const response = await context.next();
+  updateRequest.headers.append("user", userId);
+  return context.next(updateRequest);
 };
