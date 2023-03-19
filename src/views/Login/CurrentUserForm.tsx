@@ -80,7 +80,7 @@ const CurrentUserForm: Component = () => {
   };
 
   createMemo(() => {
-    if (phonePasscodeValue().six.valid) {
+    if (phonePasscode() !== "" && phonePasscodeValue().six.valid) {
       completeSignIn();
     }
   });
