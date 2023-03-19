@@ -55,6 +55,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const authData: StytchAuthenticateRes = await authRes.json();
     const userId = authData.user_id;
     const sessionToken = authData.session_token;
+    const sessionId = authData.session.session_id;
     const expiresAt = authData.session.expires_at;
     const confirmPhoneId = authData.user.phone_numbers.find(
       (p) => p.phone_id === phoneId
@@ -64,6 +65,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       userId: userId,
       phoneId: confirmPhoneId.phone_id,
       sessionToken: sessionToken,
+      sessionId: sessionId,
       expiresAt: expiresAt,
     };
 

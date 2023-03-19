@@ -133,5 +133,6 @@ export interface UserKVDoc {
   userId: string;
   phoneId: string;
   sessionToken: string;
+  sessionId: string;
   expiresAt: string;
 }
