@@ -10,6 +10,7 @@ import {
   getUser,
   getMissions,
 } from "../../utils/networkFunctions";
+import type { MissionDoc } from "../../types";
 
 import { missions } from "../../../data/missions";
 
@@ -32,13 +33,22 @@ const HeaderContainer = styled("div")`
   justify-items: center;
 `;
 
-const ServerData = styled("pre")`
-  font-size: 2rem;
-  color: var(--accent-teal);
-`;
-
 const DashboardView: Component = () => {
-  const [testData] = createResource(getTestEndpoint);
+  const [missionData] = createResource<MissionDoc[]>(getMissions);
+
+  const activeMissions = () => {
+    if (import.meta.env.DEV) {
+      console.log("Missions are coming from local data");
+      return missions;
+    }
+
+    if (missionData.state === "ready") {
+      console.log("Missions are coming from the Missions Worker and KV");
+      return missionData();
+    }
+
+    return [];
+  };
 
   return (
     <ViewContainer>
@@ -46,14 +56,8 @@ const DashboardView: Component = () => {
         <Header />
         <AstronautDataBar />
       </HeaderContainer>
-      <MissionCards missions={missions} />
-      <ErrorBoundary fallback={<ServerData>Error Getting Data</ServerData>}>
-        <ServerData>
-          {testData.state === "ready"
-            ? JSON.stringify(testData()!)
-            : "Waiting For Data"}
-        </ServerData>
-      </ErrorBoundary>
+      {missionData.loading ? "Loading" : null}
+      <MissionCards missions={activeMissions()} />
     </ViewContainer>
   );
 };

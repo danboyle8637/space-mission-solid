@@ -38,12 +38,11 @@ export interface MissionDoc {
 }
 
 export interface UserDoc {
-  userId: string;
-  emailAddress: string;
-  activeMission: string;
-  finishedMissions: string[];
+  firstName: string;
+  activeMission: MissionId | null;
+  finishedMissions: MissionId[];
   callsign: string;
-  avatar: string;
+  avatar: string | null;
 }
 
 export interface Goals {

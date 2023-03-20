@@ -1,8 +1,13 @@
-import { createMemo, children } from "solid-js";
+import { createEffect, createMemo, createResource, children } from "solid-js";
+import { useNavigate } from "@solidjs/router";
 import { styled } from "solid-styled-components";
 import type { Component, JSX, JSXElement } from "solid-js";
 
 import { GlobalStyles } from "../styles/Global";
+import { getUser } from "../utils/networkFunctions";
+import { user, updateUser } from "../../lib/userStore";
+import type { UserDoc } from "../types";
+import type { GetUserResponse } from "../types/api";
 
 interface LayoutProps {
   children: JSXElement;
@@ -10,9 +15,6 @@ interface LayoutProps {
 
 const Container = styled("main")`
   position: relative;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   width: 100%;
   isolation: isolate;
 `;
@@ -32,6 +34,38 @@ const Galaxy = styled("div")`
 
 export const BaseLayout: Component<LayoutProps> = (props) => {
   const child = children(() => props.children);
+
+  const navigate = useNavigate();
+
+  const [userData] = createResource<GetUserResponse>(getUser);
+
+  createEffect(() => {
+    if (userData.error) {
+      const clearUser: UserDoc = {
+        firstName: "",
+        activeMission: null,
+        finishedMissions: [],
+        callsign: "",
+        avatar: "",
+      };
+      updateUser(clearUser);
+      navigate("/");
+    }
+  });
+
+  createMemo(() => {
+    if (userData.state === "ready") {
+      const userDoc: UserDoc = {
+        firstName: userData().first_name,
+        activeMission: userData().active_mission_id,
+        finishedMissions: [],
+        callsign: userData().call_sign,
+        avatar: userData().avatar_url,
+      };
+
+      updateUser(userDoc);
+    }
+  });
 
   const galaxy1Styles = createMemo(
     () =>

@@ -1,15 +1,14 @@
 import { createSignal } from "solid-js";
 
-import type { UserDoc } from "../src/types";
+import type { UserDoc, MissionId } from "../src/types";
 import type { UserLoginData } from "../src/types/api";
 
 interface UserState {
-  userId: string;
-  emailAddress: string;
-  activeMission: string;
-  finishedMissions: string[];
+  firstName: string;
+  activeMission: MissionId | null;
+  finishedMissions: MissionId[];
   callsign: string;
-  avatar: string;
+  avatar: string | null;
 }
 
 // Update one item at a time... you don't need to replace the remaining state
@@ -23,12 +22,11 @@ interface UserState {
 // });
 
 export const [user, setUser] = createSignal<UserState>({
-  userId: "",
-  emailAddress: "",
-  activeMission: "",
+  firstName: "",
+  activeMission: null,
   finishedMissions: [],
   callsign: "",
-  avatar: "",
+  avatar: null,
 });
 
 export const updateUser = (user: UserDoc) => {

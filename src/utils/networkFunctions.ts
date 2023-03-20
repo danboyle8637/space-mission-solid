@@ -6,11 +6,13 @@ import {
   updateShowReturningMemberPasscodeForm,
 } from "../../lib/loginStore";
 import { updateUserLoginData } from "../../lib/userStore";
+import type { UserDoc } from "../types";
 import type {
   UserLoginData,
   LoginPhoneReqBody,
   AuthenticateNewMemberBody,
   AuthenticateCurrentMemberBody,
+  GetUserResponse,
 } from "../types/api";
 
 // ************** BACKEND ************** //
@@ -128,7 +130,9 @@ export const getUser = async () => {
     throw new Error(errorMessage);
   }
 
-  return userRes.json();
+  const user: GetUserResponse = await userRes.json();
+
+  return user;
 };
 
 export const getMissions = async () => {

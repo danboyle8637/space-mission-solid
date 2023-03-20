@@ -25,6 +25,9 @@ export interface Env {
   STYTCH_SECRET: string;
   DAN_PHONE: string;
   KINDAL_PHONE: string;
+  USER_WORKER_DEV: string;
+  MISSIONS_WORKER_DEV: string;
+  MISSION_STATS_WORKER_DEV: string;
 }
 
 // ********** API ********** //
@@ -135,4 +138,11 @@ export interface UserKVDoc {
   sessionToken: string;
   sessionId: string;
   expiresAt: string;
+}
+
+export interface GetUserResponse {
+  first_name: string;
+  call_sign: string;
+  active_mission_id: MissionId | null;
+  avatar_url: string | null;
 }

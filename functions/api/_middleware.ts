@@ -31,8 +31,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const userData: UserKVDoc = JSON.parse(userDoc);
   const { userId, expiresAt, sessionId } = userData;
 
-  if (!userId) {
-    throw new Error(`User Id is missing. Login again: ${userId}`);
+  if (!userDoc) {
+    if (userDoc) {
+      await context.env.SPACE_MISSION_SESSIONS.delete(sessionKey);
+    }
+
+    throw new Error("User Id is missing. Login again");
   }
 
   const expiresTimestamp = getExpiresAtTimestamp(expiresAt);
@@ -74,7 +78,6 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
   }
 
-  // const response = await context.next();
   updateRequest.headers.append("user", userId);
   return context.next(updateRequest);
 };

@@ -10,17 +10,12 @@ import {
   showPhoneForm,
   phoneNumberValue,
   resetLoginForm,
-  updateShowPhoneForm,
 } from "../../../lib/loginStore";
-import { userLoginData, updateUserLoginData } from "../../../lib/userStore";
+import { user, userLoginData } from "../../../lib/userStore";
 import { showLoginForm, hideLoginForm } from "../../animations";
 import { getErrorMessage, sanitizePhoneNumber } from "../../utils/helpers";
 import { fetchSendPhoneCode } from "../../utils/networkFunctions";
-import type {
-  LoginEmailReqBody,
-  LoginPhoneReqBody,
-  UserLoginData,
-} from "../../types/api";
+import type { LoginPhoneReqBody } from "../../types/api";
 
 const ViewContainer = styled("div")`
   display: flex;
@@ -56,6 +51,17 @@ const PhonePasscodeForm: Component = () => {
     if (showPhoneForm()) {
       showLoginForm(phoneFormRef);
     }
+  });
+
+  createEffect(() => {
+    setTimeout(() => {
+      if (user().firstName !== "") {
+        // user logged in
+        console.log(
+          "User is logged in already because layout got the user from cookie"
+        );
+      }
+    }, 800);
   });
 
   createMemo(() => {
