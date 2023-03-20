@@ -28,6 +28,7 @@ export interface Env {
   USER_WORKER_DEV: string;
   MISSIONS_WORKER_DEV: string;
   MISSION_STATS_WORKER_DEV: string;
+  DAN_USERID_DEV: string;
 }
 
 // ********** API ********** //

@@ -1,6 +1,9 @@
 import type { PagesFunction } from "@cloudflare/workers-types";
 import type { Env } from "../../src/types/api";
 
+import { getTestEndpoint, getUser } from "../../src/utils/devNetworkFunctions";
+import { getErrorMessage } from "../../src/utils/helpers";
+
 export const onRequest: PagesFunction<Env> = async (context) => {
   const params = context.params.dev;
 
@@ -14,42 +17,39 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const worker = params[0];
   const endpoint = params[1];
 
-  switch (worker) {
-    case "user": {
-      const baseUrl = context.env.USER_WORKER_DEV;
-      const url = `${baseUrl}/test`;
+  try {
+    switch (worker) {
+      case "user": {
+        switch (endpoint) {
+          case "test": {
+            const testData = await getTestEndpoint(context.env);
 
-      const body = {
-        devTest: "The dev test worked correctly.",
-      };
+            const response = new Response(JSON.stringify(testData), {
+              status: 200,
+            });
+            return response;
+          }
+          case "get-user": {
+            const userData = await getUser(context.env);
 
-      const testRes = await fetch(url, {
-        method: "GET",
-        headers: {
-          user: "123456",
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (testRes.status !== 200) {
-        const response = new Response("Dev request to user test failed", {
-          status: 500,
-        });
-        return response;
+            const response = new Response(JSON.stringify(userData), {
+              status: 200,
+            });
+            return response;
+          }
+        }
+        break;
       }
-
-      const testData = await testRes.json();
-
-      const response = new Response(JSON.stringify(testData), { status: 200 });
-      return response;
+      case "missions": {
+      }
+      case "mission-stats": {
+      }
+      default: {
+        throw new Error("Bad dev request. No endpoints match.");
+      }
     }
-    case "missions": {
-    }
-    case "mission-stats": {
-    }
-    default: {
-      const response = new Response("Bad Dev Request", { status: 500 });
-      return response;
-    }
+  } catch (error) {
+    const response = new Response(getErrorMessage(error), { status: 500 });
+    return response;
   }
 };

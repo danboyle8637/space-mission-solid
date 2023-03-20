@@ -92,7 +92,7 @@ export const fetchAuthenticateCurrentMember = async (
 // ************** FRONTEND ************** //
 
 export const getTestEndpoint = async () => {
-  const url = "/api/user/test";
+  const url = import.meta.env.DEV ? "/dev-api/user/test" : "/api/user/test";
 
   const body = {
     message: "Test response and user Worker are functioning properly.",
@@ -119,7 +119,9 @@ export const getTestEndpoint = async () => {
 };
 
 export const getUser = async () => {
-  const url = "/api/user/get-user";
+  const url = import.meta.env.DEV
+    ? "/dev-api/user/get-user"
+    : "/api/user/get-user";
 
   const userRes = await fetch(url, {
     method: "GET",
