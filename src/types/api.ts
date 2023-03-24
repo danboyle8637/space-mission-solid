@@ -142,8 +142,69 @@ export interface UserKVDoc {
 }
 
 export interface GetUserResponse {
-  first_name: string;
-  call_sign: string;
-  active_mission_id: MissionId | null;
-  avatar_url: string | null;
+  firstName: string;
+  callsign: string;
+  activeMissionId: MissionId | null;
+  finishedMissions: MissionId[];
+  avatarUrl: string | null;
+}
+
+export type UserActions =
+  | "create-user"
+  | "get-user"
+  | "update-user"
+  | "activate-mission"
+  | "update-avatar"
+  | "finish-mission"
+  | "test";
+
+export type MissionsActions = "get-missions";
+
+export type MissionStatsActions =
+  | "create-mission-stats"
+  | "get-mission-stats"
+  | "update-mission-stats"
+  | "cancel-mission"
+  | "get-finished-missions"
+  | "get-all-mission-stats";
+
+export interface CreateUserBody {
+  firstName: string;
+  emailAddress: string;
+  callSign: string;
+}
+
+export interface ActivateMissionBody {
+  missionId: MissionId;
+}
+
+export type StatsStatus = "active" | "complete" | "cancelled" | null;
+
+export interface CreateMissionStatsBody {
+  missionId: MissionId;
+}
+
+export interface GetMissionStatsBody {
+  missionId: MissionId;
+  status: StatsStatus;
+}
+
+export interface ActivateMissionBody {
+  missionId: MissionId;
+}
+
+export interface CreateMissionStatsBody {
+  missionId: MissionId;
+}
+
+export interface GetMissionStatsBody {
+  missionId: MissionId;
+  status: StatsStatus;
+}
+
+export type Goal = "goal1" | "goal2" | "goal3";
+
+export interface UpdateMissionStatsBody {
+  missionId: MissionId;
+  goal: Goal;
 }
