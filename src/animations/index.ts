@@ -163,3 +163,17 @@ export const showLoginForm = (form: HTMLDivElement) => {
     }
   );
 };
+
+export const hideCheckUserView = (view: HTMLDivElement) => {
+  return animate(
+    view,
+    {
+      scale: [1, 1.8],
+      opacity: [1, 0],
+    },
+    {
+      duration: 0.3,
+      easing: "ease-in-out",
+    }
+  );
+};

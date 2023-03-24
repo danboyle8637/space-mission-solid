@@ -1,4 +1,4 @@
-import { PagesFunction } from "@cloudflare/workers-types";
+import type { PagesFunction } from "@cloudflare/workers-types";
 
 import { getErrorMessage } from "../../src/utils/helpers";
 import type {

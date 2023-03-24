@@ -20,6 +20,8 @@ import type {
   UpdateMissionStatsBody,
 } from "../types/api";
 
+import { user as userState } from "../../lib/userStore";
+
 // ************** BACKEND ************** //
 
 export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
@@ -153,6 +155,16 @@ export const getUser = async () => {
   const url = import.meta.env.DEV
     ? "/dev-api/user/get-user"
     : "/api/user/get-user";
+
+  const testUser: GetUserResponse = {
+    firstName: "",
+    activeMission: null,
+    finishedMissions: [],
+    callsign: "",
+    avatarUrl: null,
+  };
+
+  return testUser;
 
   const userRes = await fetch(url, {
     method: "GET",

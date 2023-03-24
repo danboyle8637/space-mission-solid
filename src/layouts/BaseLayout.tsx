@@ -3,7 +3,6 @@ import { useNavigate } from "@solidjs/router";
 import { styled } from "solid-styled-components";
 import type { Component, JSX, JSXElement } from "solid-js";
 
-import { MessageChip } from "../components/overlays/MessageChip";
 import { GlobalStyles } from "../styles/Global";
 import { getUser } from "../utils/networkFunctions";
 import { updateUser } from "../../lib/userStore";
@@ -47,7 +46,7 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
         activeMission: null,
         finishedMissions: [],
         callsign: "",
-        avatar: "",
+        avatarUrl: "",
       };
       updateUser(clearUser);
       navigate("/");
@@ -59,17 +58,15 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
       console.log("Updating user in state");
       const userDoc: UserDoc = {
         firstName: userData().firstName,
-        activeMission: userData().activeMissionId,
+        activeMission: userData().activeMission,
         finishedMissions: userData().finishedMissions,
         callsign: userData().callsign,
-        avatar: userData().avatarUrl,
+        avatarUrl: userData().avatarUrl,
       };
 
       updateUser(userDoc);
     }
   });
-
-  const closeNotification = () => {};
 
   const galaxy1Styles = createMemo(
     () =>

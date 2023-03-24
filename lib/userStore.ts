@@ -8,7 +8,7 @@ interface UserState {
   activeMission: MissionId | null;
   finishedMissions: MissionId[];
   callsign: string;
-  avatar: string | null;
+  avatarUrl: string | null;
 }
 
 // Update one item at a time... you don't need to replace the remaining state
@@ -26,7 +26,7 @@ export const [user, setUser] = createSignal<UserState>({
   activeMission: null,
   finishedMissions: [],
   callsign: "",
-  avatar: null,
+  avatarUrl: null,
 });
 
 export const updateUser = (user: UserDoc) => {

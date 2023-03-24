@@ -29,6 +29,7 @@ export interface Env {
   MISSIONS_WORKER_DEV: string;
   MISSION_STATS_WORKER_DEV: string;
   DAN_USERID_DEV: string;
+  SPACE_MISSION_USER_DEV_DATABASE: KVNamespace;
 }
 
 // ********** API ********** //
@@ -144,7 +145,7 @@ export interface UserKVDoc {
 export interface GetUserResponse {
   firstName: string;
   callsign: string;
-  activeMissionId: MissionId | null;
+  activeMission: MissionId | null;
   finishedMissions: MissionId[];
   avatarUrl: string | null;
 }

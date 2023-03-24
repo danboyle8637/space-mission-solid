@@ -42,7 +42,7 @@ export interface UserDoc {
   activeMission: MissionId | null;
   finishedMissions: MissionId[];
   callsign: string;
-  avatar: string | null;
+  avatarUrl: string | null;
 }
 
 export interface Goals {
