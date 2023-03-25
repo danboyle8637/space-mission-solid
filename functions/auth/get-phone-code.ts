@@ -62,7 +62,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       // true if new - false if already exist
       const userCreated = loginData.user_created;
 
-      if (!phoneId || userCreated) {
+      console.log("phoneId: ", phoneId);
+      console.log("userCreated: ", userCreated);
+
+      if (phoneId === undefined || userCreated === undefined) {
         throw new Error(
           "Something went wrong with Stytch request and phone id and userCreated are not here."
         );

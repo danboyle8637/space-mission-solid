@@ -1,11 +1,12 @@
 import { createEffect, createMemo, createResource, children } from "solid-js";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, useLocation } from "@solidjs/router";
 import { styled } from "solid-styled-components";
 import type { Component, JSX, JSXElement } from "solid-js";
 
 import { GlobalStyles } from "../styles/Global";
 import { getUser } from "../utils/networkFunctions";
 import { updateUser } from "../../lib/userStore";
+import { isAuthenticated } from "../../lib/loginStore";
 import type { UserDoc } from "../types";
 import type { GetUserResponse } from "../types/api";
 
@@ -36,11 +37,32 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
   const child = children(() => props.children);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [userData] = createResource<GetUserResponse>(getUser);
+  const [userData] = createResource(isAuthenticated, getUser);
 
-  createEffect(() => {
+  createMemo(() => {
+    const pathname = location.pathname;
+
+    const unprotectedRoutes = [
+      "/enrolling",
+      "/login",
+      "/current-member",
+      "/new-member",
+      "/error/create-user",
+      "/",
+    ];
+
+    const protectedRoutes = ["/dashboard"];
+
+    const isProtectedRoute = protectedRoutes.includes(pathname);
+
     if (userData.error) {
+      console.log("USER DATA ERRORING OUT FROM MIDDLEWARE");
+    }
+
+    if (userData.error && !isAuthenticated()) {
+      console.log("Getting user is erroring out");
       const clearUser: UserDoc = {
         firstName: "",
         activeMission: null,
@@ -51,11 +73,8 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
       updateUser(clearUser);
       navigate("/");
     }
-  });
 
-  createMemo(() => {
-    if (userData.state === "ready") {
-      console.log("Updating user in state");
+    if (userData.state === "ready" && isAuthenticated()) {
       const userDoc: UserDoc = {
         firstName: userData().firstName,
         activeMission: userData().activeMission,
@@ -63,8 +82,8 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
         callsign: userData().callsign,
         avatarUrl: userData().avatarUrl,
       };
-
       updateUser(userDoc);
+      navigate("/dashboard");
     }
   });
 

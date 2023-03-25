@@ -1,10 +1,8 @@
-import { createEffect, createResource } from "solid-js";
 import { styled } from "solid-styled-components";
 import type { Component } from "solid-js";
 
 import { PhoneTextInput } from "../../components/forms/PhoneTextInput";
 import { FormButton } from "../../components/buttons/FormButton";
-import { getErrorMessage } from "../../utils/helpers";
 import {
   emailAddress,
   emailAddressOptions,
@@ -17,7 +15,6 @@ import {
   resetLoginForm,
   isMakingNetworkRequest,
 } from "../../../lib/loginStore";
-import { user } from "../../../lib/userStore";
 
 interface FormProps {
   handleFormSubmit: (e: SubmitEvent) => void;
@@ -37,10 +34,6 @@ const ButtonContainer = styled("div")`
 `;
 
 export const LoginForm: Component<FormProps> = (props) => {
-  createEffect(() => {
-    console.log("User data from login form: ", user());
-  });
-
   return (
     <FormContainer onSubmit={props.handleFormSubmit}>
       {/* <TextInput

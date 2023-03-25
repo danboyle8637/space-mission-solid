@@ -84,7 +84,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       JSON.stringify(userKVDoc)
     );
 
-    const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
+    const cookieExpiresAt = 1000 * 60 * 60 * 24;
+
+    const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly; Max-Age=${cookieExpiresAt}`;
 
     const response = new Response("Authenticated", { status: 200 });
     response.headers.set("Set-Cookie", cookieHeader);

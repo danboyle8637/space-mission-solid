@@ -11,7 +11,7 @@ import {
   phoneNumberValue,
   resetLoginForm,
 } from "../../../lib/loginStore";
-import { user, userLoginData } from "../../../lib/userStore";
+import { userLoginData } from "../../../lib/userStore";
 import { showLoginForm, hideLoginForm } from "../../animations";
 import { getErrorMessage, sanitizePhoneNumber } from "../../utils/helpers";
 import { fetchSendPhoneCode } from "../../utils/networkFunctions";
@@ -51,17 +51,6 @@ const PhonePasscodeForm: Component = () => {
     if (showPhoneForm()) {
       showLoginForm(phoneFormRef);
     }
-  });
-
-  createEffect(() => {
-    setTimeout(() => {
-      if (user().firstName !== "") {
-        // user logged in
-        console.log(
-          "User is logged in already because layout got the user from cookie"
-        );
-      }
-    }, 800);
   });
 
   createMemo(() => {
@@ -107,6 +96,7 @@ const PhonePasscodeForm: Component = () => {
       // Open modal and talk about the error
       console.log("Error from server: ", getErrorMessage(error));
       resetLoginForm();
+      // TODO - Show an error overlay saying there was an error and to try loggin in again
     }
   };
 

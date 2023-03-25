@@ -64,7 +64,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const userKVDoc: UserKVDoc = {
       userId: userId,
       phoneId: confirmPhoneId.phone_id,
-      sessionToken: sessionToken,
+      sessionToken: sessionToken, // You can always check the session with Stytch
       sessionId: sessionId,
       expiresAt: expiresAt,
     };
@@ -81,6 +81,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       emailAddress: emailAddress,
       callSign: callSign,
     };
+
+    // const prodCookie = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
+
+    // const devCookie = `dev-session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 
     const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly`;
 

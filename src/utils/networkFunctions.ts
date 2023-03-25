@@ -4,6 +4,7 @@ import {
   updateShowPhoneForm,
   updateShowNewMemberPasscodeForm,
   updateShowReturningMemberPasscodeForm,
+  toggleIsAuthenticated,
 } from "../../lib/loginStore";
 import { updateUserLoginData } from "../../lib/userStore";
 import type { MissionId, UserDoc } from "../types";
@@ -62,12 +63,10 @@ export const fetchAuthenticateNewMember = async (
 
   const testMessage = await newMemberRes.text();
 
-  console.log(testMessage);
-
   toggleIsMakingNetworkRequest();
   updateShowNewMemberPasscodeForm(false);
 
-  return;
+  return testMessage;
 };
 
 export const fetchAuthenticateCurrentMember = async (
@@ -90,6 +89,7 @@ export const fetchAuthenticateCurrentMember = async (
 
   toggleIsMakingNetworkRequest();
   updateShowReturningMemberPasscodeForm(false);
+  toggleIsAuthenticated();
 
   return;
 };
@@ -156,15 +156,15 @@ export const getUser = async () => {
     ? "/dev-api/user/get-user"
     : "/api/user/get-user";
 
-  const testUser: GetUserResponse = {
-    firstName: "",
-    activeMission: null,
-    finishedMissions: [],
-    callsign: "",
-    avatarUrl: null,
-  };
+  // const testUser: GetUserResponse = {
+  //   firstName: "",
+  //   activeMission: null,
+  //   finishedMissions: [],
+  //   callsign: "",
+  //   avatarUrl: null,
+  // };
 
-  return testUser;
+  // return testUser;
 
   const userRes = await fetch(url, {
     method: "GET",

@@ -10,6 +10,13 @@ import type { InputValue, InputOptions } from "../src/types";
 
 // *************** Login Network Requests *************** //
 
+export const [isAuthenticated, setIsAuthenticated] =
+  createSignal<boolean>(false);
+
+export const toggleIsAuthenticated = () => {
+  setIsAuthenticated((prevValue) => !prevValue);
+};
+
 export const [isMakingNetworkRequest, setIsMakingNetworkRequest] =
   createSignal<boolean>(false);
 
@@ -385,7 +392,7 @@ export const updatePhonePasscodeValue = (e: InputEvent) => {
   const name = inputElement.name;
   const value = inputElement.value;
 
-  const regex = /^[1-9]+$/;
+  const regex = /^[0-9]+$/;
   const valid = regex.test(value);
 
   switch (name) {

@@ -1,4 +1,10 @@
-import { createEffect, createSignal, onMount } from "solid-js";
+import {
+  createEffect,
+  createMemo,
+  createSignal,
+  onMount,
+  onError,
+} from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import { styled } from "solid-styled-components";
 import { animate, stagger, timeline } from "motion";
@@ -6,7 +12,15 @@ import type { Component } from "solid-js";
 
 import { TerminalIcon } from "../../components/svgs/TerminalIcon";
 import { hideCheckUserView } from "../../animations";
+import { getTestEndpoint, createUser } from "../../utils/networkFunctions";
 import { user } from "../../../lib/userStore";
+import {
+  firstNameValue,
+  callSignValue,
+  emailAddress,
+} from "../../../lib/loginStore";
+import { getErrorMessage } from "../../utils/helpers";
+import type { CreateUserBody } from "../../types/api";
 
 const ViewContainer = styled("div")`
   display: flex;
@@ -23,6 +37,12 @@ const Container = styled("div")`
   width: max-content;
 `;
 
+const PreContainer = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+`;
+
 const Pre = styled("pre")`
   display: flex;
   gap: 3px;
@@ -35,11 +55,17 @@ const Pre = styled("pre")`
   }
 `;
 
+const Message = styled("span")`
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f8f8f8;
+`;
+
 const Icon = styled("div")`
   width: 60px;
 `;
 
-const CheckingForUser: Component = () => {
+const CreateNewUser: Component = () => {
   let containerRef: HTMLDivElement;
 
   const navigate = useNavigate();
@@ -50,7 +76,7 @@ const CheckingForUser: Component = () => {
     setShouldNavigate(true);
   };
 
-  onMount(() => {
+  onMount(async () => {
     const sequence: any = [
       [".char", { x: [-8, 0], opacity: [0, 1] }, { delay: stagger(0.05) }],
       [
@@ -69,22 +95,33 @@ const CheckingForUser: Component = () => {
         navigateFromView();
       });
     });
-  });
 
-  // TODO - Need to make sure the layout doesnt navigate if you want this to do the navigation
-  createEffect(() => {
-    if (shouldNavigate()) {
-      hideCheckUserView(containerRef).finished.then(() => {
-        if (user().firstName !== "") {
-          navigate("/dashboard");
-        }
+    try {
+      const body: CreateUserBody = {
+        firstName: firstNameValue().value,
+        emailAddress: emailAddress().value,
+        callSign: callSignValue().value,
+      };
 
-        if (user().firstName === "") {
-          navigate("/login");
-        }
-      });
+      await createUser(body);
+    } catch (error) {
+      navigate("/error/create-user");
     }
   });
+
+  // createEffect(() => {
+  //   if (shouldNavigate()) {
+  //     hideCheckUserView(containerRef).finished.then(() => {
+  //       if (user().firstName !== "") {
+  //         // navigate("/dashboard");
+  //       }
+
+  //       if (user().firstName === "") {
+  //         // navigate("/login");
+  //       }
+  //     });
+  //   }
+  // });
 
   return (
     <ViewContainer ref={containerRef!}>
@@ -93,40 +130,32 @@ const CheckingForUser: Component = () => {
           <TerminalIcon />
         </Icon>
         <Pre>
-          <span class="char">C</span>
-          <span class="char">H</span>
           <span class="char">E</span>
-          <span class="char">C</span>
-          <span class="char">K</span>
-          <span class="char">I</span>
           <span class="char">N</span>
-          <span class="char">G</span>
-          <span class="char"> </span>
-          <span class="char">F</span>
-          <span class="char">O</span>
           <span class="char">R</span>
-          <span class="char"> </span>
+          <span class="char">O</span>
           <span class="char">L</span>
-          <span class="char">O</span>
+          <span class="char">L</span>
+          <span class="char">I</span>
+          <span class="char">N</span>
           <span class="char">G</span>
-          <span class="char">G</span>
-          <span class="char">E</span>
-          <span class="char">D</span>
           <span class="char"> </span>
           <span class="char">I</span>
           <span class="char">N</span>
           <span class="char"> </span>
-          <span class="char">A</span>
           <span class="char">S</span>
-          <span class="char">T</span>
-          <span class="char">R</span>
+          <span class="char">P</span>
+          <span class="char">A</span>
+          <span class="char">C</span>
+          <span class="char">E</span>
+          <span class="char"> </span>
+          <span class="char">M</span>
+          <span class="char">I</span>
+          <span class="char">S</span>
+          <span class="char">S</span>
+          <span class="char">I</span>
           <span class="char">O</span>
           <span class="char">N</span>
-          <span class="char">A</span>
-          <span class="char">U</span>
-          <span class="char">G</span>
-          <span class="char">H</span>
-          <span class="char">T</span>
           <span class="char">.</span>
           <span class="char">.</span>
           <span class="char">.</span>
@@ -136,4 +165,4 @@ const CheckingForUser: Component = () => {
   );
 };
 
-export default CheckingForUser;
+export default CreateNewUser;
