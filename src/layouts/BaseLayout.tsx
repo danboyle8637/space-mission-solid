@@ -4,7 +4,7 @@ import { styled } from "solid-styled-components";
 import type { Component, JSX, JSXElement } from "solid-js";
 
 import { GlobalStyles } from "../styles/Global";
-import { getUser } from "../utils/networkFunctions";
+import { getUser, getTestEndpoint } from "../utils/networkFunctions";
 import { updateUser } from "../../lib/userStore";
 import { isAuthenticated } from "../../lib/loginStore";
 import type { UserDoc } from "../types";
@@ -41,7 +41,13 @@ export const BaseLayout: Component<LayoutProps> = (props) => {
 
   const [userData] = createResource(isAuthenticated, getUser);
 
+  const [testData] = createResource(getTestEndpoint);
+
   createMemo(() => {
+    if (testData.state === "ready") {
+      console.log("Test Data: ", testData());
+    }
+
     const pathname = location.pathname;
 
     const unprotectedRoutes = [

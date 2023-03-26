@@ -4,7 +4,7 @@ import type {
   AuthenticateCurrentMemberBody,
   StytchAuthenticateBody,
   StytchAuthenticateRes,
-  UserKVDoc,
+  UserSessionReqBody,
 } from "../../src/types/api";
 import { getErrorMessage } from "../../src/utils/helpers";
 
@@ -64,7 +64,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       (p) => p.phone_id === phoneId
     );
 
-    const userKVDoc: UserKVDoc = {
+    const uuid = crypto.randomUUID();
+
+    const userSession: UserSessionReqBody = {
+      uuid: uuid,
       userId: userId,
       phoneId: confirmPhoneId.phone_id,
       sessionToken: sessionToken,
@@ -72,16 +75,21 @@ export const onRequest: PagesFunction<Env> = async (context) => {
       expiresAt: expiresAt,
     };
 
-    const uuid = crypto.randomUUID();
+    const sessionUrl = `${context.env.USER_WORKER_DEV}/create-dev-session`;
 
-    await context.env.SPACE_MISSION_SESSIONS.put(
-      uuid,
-      JSON.stringify(userKVDoc)
-    );
+    const userSessionRes = await fetch(sessionUrl, {
+      method: "POST",
+      body: JSON.stringify(userSession),
+    });
+
+    if (userSessionRes.status !== 200) {
+      const errorMessage = await userSessionRes.text();
+      throw new Error(errorMessage);
+    }
 
     const cookieExpiresAt = 1000 * 60 * 60 * 24;
 
-    const cookieHeader = `session-token=${uuid}; SameSite=Lax; Path=/api; Secure; HttpOnly; Max-Age=${cookieExpiresAt}`;
+    const cookieHeader = `dev-session-token=${uuid}; SameSite=Lax; Path=/dev-api; Secure; HttpOnly; Max-Age=${cookieExpiresAt}`;
 
     const response = new Response("Authenticated", { status: 200 });
     response.headers.set("Set-Cookie", cookieHeader);

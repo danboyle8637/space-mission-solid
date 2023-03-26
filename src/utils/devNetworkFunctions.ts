@@ -4,8 +4,10 @@ import type {
   ActivateMissionBody,
   CreateMissionStatsBody,
   GetMissionStatsBody,
+  UpdateMissionStatsBody,
+  UserKVDoc,
 } from "../types/api";
-import type { MissionId } from "../types";
+import type { MissionId, MissionStatsDoc } from "../types";
 
 export const getTestEndpoint = async (env: Env) => {
   const url = `${env.USER_WORKER_DEV}/test`;
@@ -14,13 +16,8 @@ export const getTestEndpoint = async (env: Env) => {
     devFunctions: "Request is coming from inside dev fuctions",
   };
 
-  // **************** USER WORKER **************** //
-
   const testRes = await fetch(url, {
     method: "POST",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
     body: JSON.stringify(body),
   });
 
@@ -34,15 +31,14 @@ export const getTestEndpoint = async (env: Env) => {
   return testData;
 };
 
+// **************** USER WORKER **************** //
+
 // This hits the Worker in local mode to get the data
 export const getUser = async (env: Env) => {
   const url = `${env.USER_WORKER_DEV}/get-user`;
 
   const userRes = await fetch(url, {
     method: "GET",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
   });
 
   if (userRes.status !== 200) {
@@ -66,9 +62,6 @@ export const createUser = async (newUser: CreateUserBody, env: Env) => {
 
   const userRes = await fetch(url, {
     method: "POST",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
     body: JSON.stringify(body),
   });
 
@@ -93,9 +86,6 @@ export const activateMission = async (missionId: MissionId, env: Env) => {
 
   const missionRes = await fetch(url, {
     method: "POST",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
     body: JSON.stringify(body),
   });
 
@@ -114,9 +104,6 @@ export const userFinishMission = async (env: Env) => {
 
   const finishMissionRes = await fetch(url, {
     method: "GET",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
   });
 
   if (finishMissionRes.status !== 200) {
@@ -136,9 +123,6 @@ export const getMissions = async (env: Env) => {
 
   const missionsRes = await fetch(url, {
     method: "GET",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
   });
 
   if (missionsRes.status !== 200) {
@@ -162,9 +146,6 @@ export const createMissionStats = async (missionId: MissionId, env: Env) => {
 
   const statsRes = await fetch(url, {
     method: "POST",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
     body: JSON.stringify(body),
   });
 
@@ -191,9 +172,6 @@ export const getMissionStats = async (
 
   const getMissionStatsRes = await fetch(url, {
     method: "POST",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
     body: JSON.stringify(body),
   });
 
@@ -212,9 +190,6 @@ export const getAllMissionStats = async (env: Env) => {
 
   const allMissionStatsRes = await fetch(url, {
     method: "GET",
-    headers: {
-      user: `${env.DAN_USERID_DEV}`,
-    },
   });
 
   if (allMissionStatsRes.status !== 200) {
@@ -229,6 +204,44 @@ export const getAllMissionStats = async (env: Env) => {
 
 export const getFinishedMissions = async (env: Env) => {
   const url = `${env.MISSION_STATS_WORKER_DEV}/get-finished-missions`;
+
+  const finishedMissionsStatsRes = await fetch(url, {
+    method: "GET",
+  });
+
+  if (finishedMissionsStatsRes.status !== 200) {
+    const errorMessage = await finishedMissionsStatsRes.text();
+    throw new Error(errorMessage);
+  }
+
+  const finishedMissions: MissionStatsDoc[] =
+    await finishedMissionsStatsRes.json();
+
+  return finishedMissions;
 };
 
-export const updateMissionStats = async (env: Env) => {};
+export const updateMissionStats = async (
+  updateMissionBody: UpdateMissionStatsBody,
+  env: Env
+) => {
+  const url = `${env.MISSION_STATS_WORKER_DEV}/update-mission-stats`;
+
+  const body: UpdateMissionStatsBody = {
+    missionId: updateMissionBody.missionId,
+    goal: updateMissionBody.goal,
+  };
+
+  const updateMissionStatsRes = await fetch(url, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
+
+  if (updateMissionStatsRes.status !== 200) {
+    const errorMessage = await updateMissionStatsRes.text();
+    throw new Error(errorMessage);
+  }
+
+  const updateMessage = await updateMissionStatsRes.text();
+
+  return updateMessage;
+};

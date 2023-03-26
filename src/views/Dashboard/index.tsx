@@ -34,21 +34,21 @@ const HeaderContainer = styled("div")`
 `;
 
 const DashboardView: Component = () => {
-  const [missionData] = createResource<MissionDoc[]>(getMissions);
+  // const [missionData] = createResource<MissionDoc[]>(getMissions);
 
-  const activeMissions = () => {
-    if (import.meta.env.DEV) {
-      console.log("Missions are coming from local data");
-      return missions;
-    }
+  // const activeMissions = () => {
+  //   if (import.meta.env.DEV) {
+  //     console.log("Missions are coming from local data");
+  //     return missions;
+  //   }
 
-    if (missionData.state === "ready") {
-      console.log("Missions are coming from the Missions Worker and KV");
-      return missionData();
-    }
+  //   if (missionData.state === "ready") {
+  //     console.log("Missions are coming from the Missions Worker and KV");
+  //     return missionData();
+  //   }
 
-    return [];
-  };
+  //   return [];
+  // };
 
   return (
     <ViewContainer>
@@ -56,10 +56,13 @@ const DashboardView: Component = () => {
         <Header />
         <AstronautDataBar />
       </HeaderContainer>
-      {missionData.loading ? "Loading" : null}
-      <MissionCards missions={activeMissions()} />
+      <MissionCards missions={missions} />
     </ViewContainer>
   );
 };
 
 export default DashboardView;
+
+/*
+{missionData.loading ? "Loading" : null}
+*/

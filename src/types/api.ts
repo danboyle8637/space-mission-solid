@@ -29,7 +29,6 @@ export interface Env {
   MISSIONS_WORKER_DEV: string;
   MISSION_STATS_WORKER_DEV: string;
   DAN_USERID_DEV: string;
-  SPACE_MISSION_USER_DEV_DATABASE: KVNamespace;
 }
 
 // ********** API ********** //
@@ -72,6 +71,11 @@ export interface StytchLoginCreateRes {
 export interface UserLoginData {
   phoneId: string;
   userCreated: boolean;
+}
+
+export interface DevAuthResponse {
+  uuid: string;
+  userSession: UserKVDoc;
 }
 
 interface StytchPhoneNumbers {
@@ -135,6 +139,15 @@ export interface GetUserBody {
 }
 
 export interface UserKVDoc {
+  userId: string;
+  phoneId: string;
+  sessionToken: string;
+  sessionId: string;
+  expiresAt: string;
+}
+
+export interface UserSessionReqBody {
+  uuid: string;
   userId: string;
   phoneId: string;
   sessionToken: string;
@@ -208,4 +221,14 @@ export type Goal = "goal1" | "goal2" | "goal3";
 export interface UpdateMissionStatsBody {
   missionId: MissionId;
   goal: Goal;
+}
+
+export interface UserSessionRes {
+  userId: string;
+  sessionId: string;
+  expiresAt: string;
+}
+
+export interface DeleteUserSessionBody {
+  uuid: string;
 }

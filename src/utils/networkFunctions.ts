@@ -7,7 +7,7 @@ import {
   toggleIsAuthenticated,
 } from "../../lib/loginStore";
 import { updateUserLoginData } from "../../lib/userStore";
-import type { MissionId, UserDoc } from "../types";
+import type { MissionId } from "../types";
 import type {
   UserLoginData,
   LoginPhoneReqBody,
@@ -19,6 +19,8 @@ import type {
   CreateMissionStatsBody,
   GetMissionStatsBody,
   UpdateMissionStatsBody,
+  DevAuthResponse,
+  UserKVDoc,
 } from "../types/api";
 
 import { user as userState } from "../../lib/userStore";
@@ -26,7 +28,11 @@ import { user as userState } from "../../lib/userStore";
 // ************** BACKEND ************** //
 
 export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
-  const getCodeRes = await fetch("/auth/get-phone-code", {
+  const url = import.meta.env.DEV
+    ? "/dev-auth/get-phone-code"
+    : "/auth/get-phone-code";
+
+  const getCodeRes = await fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
   });
@@ -50,7 +56,12 @@ export const fetchSendPhoneCode = async (body: LoginPhoneReqBody) => {
 export const fetchAuthenticateNewMember = async (
   body: AuthenticateNewMemberBody
 ) => {
-  const url = "/auth/authenticate-new-user";
+  const isDev = import.meta.env.DEV;
+
+  const url = isDev
+    ? "/dev-auth/authenticate-new-user"
+    : "/auth/authenticate-new-user";
+
   const newMemberRes = await fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
@@ -65,6 +76,7 @@ export const fetchAuthenticateNewMember = async (
 
   toggleIsMakingNetworkRequest();
   updateShowNewMemberPasscodeForm(false);
+  toggleIsAuthenticated();
 
   return testMessage;
 };
@@ -72,7 +84,10 @@ export const fetchAuthenticateNewMember = async (
 export const fetchAuthenticateCurrentMember = async (
   body: AuthenticateCurrentMemberBody
 ) => {
-  const url = "/auth/authenticate-user";
+  const isDev = import.meta.env.DEV;
+
+  const url = isDev ? "/dev-auth/authenticate-user" : "/auth/authenticate-user";
+
   const currentMemberRes = await fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
@@ -118,9 +133,7 @@ export const getTestEndpoint = async () => {
 
   const resData = await testRes.json();
 
-  console.log(resData);
-
-  return;
+  return resData;
 };
 
 // ??????????? USER WORKER ??????????? //
